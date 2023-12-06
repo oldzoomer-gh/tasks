@@ -22,19 +22,26 @@ public class User implements UserDetails {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "password", length = 120, nullable = false)
-    private String password;
-
     @Column(name = "email", unique = true, length = 50, nullable = false)
     private String email;
 
+    @Column(name = "password", length = 120, nullable = false)
+    private String password;
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @Builder.Default
     private List<Task> authorTasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "assigned", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @Builder.Default
     private List<Task> assignedTasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @Builder.Default
+    private List<Comments> comments = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -74,14 +81,15 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) &&
-                Objects.equals(password, user.password) &&
                 Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
                 Objects.equals(authorTasks, user.authorTasks) &&
-                Objects.equals(assignedTasks, user.assignedTasks);
+                Objects.equals(assignedTasks, user.assignedTasks) &&
+                Objects.equals(comments, user.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, email, authorTasks, assignedTasks);
+        return Objects.hash(id, email, password, authorTasks, assignedTasks, comments);
     }
 }

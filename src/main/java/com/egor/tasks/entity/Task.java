@@ -5,6 +5,8 @@ import com.egor.tasks.constant.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -37,6 +39,15 @@ public class Task {
     @JoinColumn(name = "author_id")
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "assigned_id")
+    private User assigned;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @Builder.Default
+    private List<Comments> comments = new ArrayList<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,15 +58,12 @@ public class Task {
                 Objects.equals(description, task.description) &&
                 status == task.status && priority == task.priority &&
                 Objects.equals(author, task.author) &&
-                Objects.equals(assigned, task.assigned);
+                Objects.equals(assigned, task.assigned) &&
+                Objects.equals(comments, task.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status, priority, author, assigned);
+        return Objects.hash(id, name, description, status, priority, author, assigned, comments);
     }
-
-    @ManyToOne
-    @JoinColumn(name = "assigned_id")
-    private User assigned;
 }
