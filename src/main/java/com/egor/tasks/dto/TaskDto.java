@@ -5,14 +5,10 @@ import com.egor.tasks.constant.TaskStatus;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
-@AllArgsConstructor
-@Builder
 @Data
 public class TaskDto {
     @Size(max = 100)

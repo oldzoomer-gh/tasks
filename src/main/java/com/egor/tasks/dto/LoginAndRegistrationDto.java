@@ -2,14 +2,11 @@ package com.egor.tasks.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class UserDto {
+public class LoginAndRegistrationDto {
     @Size(max = 50)
     @NotEmpty
     @Email
@@ -18,13 +15,4 @@ public class UserDto {
     @Size(max = 32)
     @NotEmpty
     private String password;
-
-    @NotNull
-    private List<TaskDto> authorTasks;
-
-    @NotNull
-    private List<TaskDto> assignedTasks;
-
-    @NotNull
-    private List<CommentsDto> comments;
 }

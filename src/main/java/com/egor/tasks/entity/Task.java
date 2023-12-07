@@ -16,7 +16,6 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,8 +43,7 @@ public class Task {
     private User assigned;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    @Builder.Default
+    @ToString.Exclude // for correctly execution of code, not error-prone
     private List<Comments> comments = new ArrayList<>();
 
     @Override

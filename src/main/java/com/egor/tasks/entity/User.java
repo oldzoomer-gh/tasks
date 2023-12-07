@@ -15,7 +15,7 @@ import java.util.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder // for converting registration data to entity
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,8 @@ public class User implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    @Builder.Default
+    @ToString.Exclude // for correctly execution of code, not error-prone
+    @Builder.Default // also for correctly execution of code
     private List<Task> authorTasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "assigned", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var userRole = new HashSet<SimpleGrantedAuthority>();
-        userRole.add(new SimpleGrantedAuthority("ROLE_USER"));
+        userRole.add(new SimpleGrantedAuthority("ROLE_USER")); // all users are users, not admins
         return userRole;
     }
 
