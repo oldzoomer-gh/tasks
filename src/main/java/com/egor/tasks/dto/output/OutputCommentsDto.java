@@ -1,4 +1,4 @@
-package com.egor.tasks.dto;
+package com.egor.tasks.dto.output;
 
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class CommentsDto {
+public class OutputCommentsDto {
     @NotNull
     private User author;
 
