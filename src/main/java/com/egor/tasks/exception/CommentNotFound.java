@@ -1,5 +1,9 @@
 package com.egor.tasks.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Comment not found.")
 public class CommentNotFound extends Exception {
     public CommentNotFound() {
         super();

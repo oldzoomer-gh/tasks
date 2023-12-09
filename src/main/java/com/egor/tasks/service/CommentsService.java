@@ -4,12 +4,16 @@ import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
 import com.egor.tasks.dto.input.CreateCommentsDto;
 import com.egor.tasks.dto.output.OutputCommentsDto;
 import com.egor.tasks.exception.CommentNotFound;
+import com.egor.tasks.exception.ForbiddenChanges;
+import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CommentsService {
-    void create(CreateCommentsDto comment, Long taskId, String email);
-    void edit(Long id, ChangeCommentsTextDataDto changes, String email) throws CommentNotFound;
+    void create(CreateCommentsDto comment, Long taskId, String email) throws UserNotFound, TaskNotFound;
+    void edit(Long id, ChangeCommentsTextDataDto changes, String email) throws CommentNotFound, UserNotFound, ForbiddenChanges;
     OutputCommentsDto getComment(Long id) throws CommentNotFound;
-    Page<OutputCommentsDto> getMultipleCommentsForUser(String email) throws UserNotFound;
+    Page<OutputCommentsDto> getMultipleCommentsForUser(String email, Pageable pageable) throws UserNotFound;
+    Page<OutputCommentsDto> getMultipleCommentsForTask(Long taskId, Pageable pageable) throws TaskNotFound;
 }

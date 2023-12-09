@@ -1,5 +1,6 @@
 package com.egor.tasks.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,16 +32,19 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // for correctly execution of code, not error-prone
     @Builder.Default // also for correctly execution of code
+    @JsonManagedReference
     private List<Task> authorTasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "assigned", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
+    @JsonManagedReference
     private List<Task> assignedTasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
+    @JsonManagedReference
     private List<Comments> comments = new ArrayList<>();
 
     @Override
