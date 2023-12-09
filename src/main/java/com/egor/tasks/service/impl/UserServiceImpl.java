@@ -1,7 +1,7 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.converters.RegistrationDataConverter;
-import com.egor.tasks.dto.LoginAndRegistrationDto;
+import com.egor.tasks.converters.input.RegistrationDataInputMapper;
+import com.egor.tasks.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final JwtUtilities jwtUtilities;
     private final UserRepository userRepository;
-    private final RegistrationDataConverter registrationDataConverter;
+    private final RegistrationDataInputMapper registrationDataInputMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUser("Duplicate E-Mail.");
         }
 
-        User user = registrationDataConverter.convert(userData);
+        User user = registrationDataInputMapper.toEntity(userData);
         assert user != null;
         userRepository.save(user);
     }

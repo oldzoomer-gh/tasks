@@ -1,11 +1,11 @@
-package com.egor.tasks.dto;
+package com.egor.tasks.dto.change;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class TaskNameAndDescriptionDto {
+public class ChangeTaskTextDataDto {
     @Size(max = 100)
     @NotEmpty
     private String name;
