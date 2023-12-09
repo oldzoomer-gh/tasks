@@ -1,5 +1,6 @@
 package com.egor.tasks.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,11 +21,13 @@ public class Comments {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
+    @JsonBackReference
     private User author;
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id")
+    @JsonBackReference
     private Task task;
 
     @Column(name = "text", length = 300, nullable = false)

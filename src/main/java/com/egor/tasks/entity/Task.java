@@ -2,6 +2,7 @@ package com.egor.tasks.entity;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,14 +37,17 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @JsonBackReference
     private User author;
 
     @ManyToOne
     @JoinColumn(name = "assigned_id")
+    @JsonBackReference
     private User assigned;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // for correctly execution of code, not error-prone
+    @JsonBackReference
     private List<Comments> comments = new ArrayList<>();
 
     @Override

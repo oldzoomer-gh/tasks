@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface TaskOutputMapper {
-    OutputTaskDto toDisplayDto(Task task);
-    OutputUserDto toDisplayUserDto(User user);
+    OutputTaskDto map(Task task);
+
+    OutputUserDto map(User user);
 }

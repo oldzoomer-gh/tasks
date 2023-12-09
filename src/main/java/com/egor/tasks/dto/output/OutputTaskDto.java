@@ -2,7 +2,6 @@ package com.egor.tasks.dto.output;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.entity.User;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -25,8 +24,8 @@ public class OutputTaskDto {
     private TaskPriority priority;
 
     @NotNull
-    private User author;
+    private OutputUserDto author;
 
     @NotNull
-    private User assigned;
+    private OutputUserDto assigned;
 }
