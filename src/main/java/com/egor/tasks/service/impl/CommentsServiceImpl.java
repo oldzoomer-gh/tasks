@@ -66,6 +66,21 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
+    public void delete(Long id, String email) throws UserNotFound, ForbiddenChanges, CommentNotFound {
+        Comments comments = commentsRepository.findById(id)
+                .orElseThrow(() -> new CommentNotFound("Comment not found."));
+
+        User author = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFound("User not found!"));
+
+        if (!comments.getAuthor().equals(author)) {
+            throw new ForbiddenChanges("Changes of data must do only his author!");
+        } else {
+            commentsRepository.deleteById(id);
+        }
+    }
+
+    @Override
     public OutputCommentsDto getComment(Long id) throws CommentNotFound {
         Comments comment = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));

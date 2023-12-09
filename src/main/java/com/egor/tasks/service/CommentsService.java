@@ -11,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CommentsService {
-    void create(CreateCommentsDto comment, Long taskId, String email) throws UserNotFound, TaskNotFound;
-    void edit(Long id, ChangeCommentsTextDataDto changes, String email) throws CommentNotFound, UserNotFound, ForbiddenChanges;
+    void create(CreateCommentsDto comment, Long taskId, String email)
+            throws UserNotFound, TaskNotFound;
+    void edit(Long id, ChangeCommentsTextDataDto changes, String email)
+            throws CommentNotFound, UserNotFound, ForbiddenChanges;
+    void delete(Long id, String email) throws UserNotFound, ForbiddenChanges, CommentNotFound;
     OutputCommentsDto getComment(Long id) throws CommentNotFound;
     Page<OutputCommentsDto> getMultipleCommentsForUser(String email, Pageable pageable) throws UserNotFound;
     Page<OutputCommentsDto> getMultipleCommentsForTask(Long taskId, Pageable pageable) throws TaskNotFound;
