@@ -30,7 +30,7 @@ class UserServiceImplTest {
     private UserRepository userRepository;
 
     @Spy
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @InjectMocks
     private UserServiceImpl userService;

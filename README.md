@@ -2,4 +2,4 @@
 
 Based mainly on Java and Spring technologies.
 
-Now it's on early development stage.
+Now it's an early development stage.
