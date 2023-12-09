@@ -91,7 +91,6 @@ public class TaskController {
                                                   @RequestParam int end,
                                                   @RequestParam String email)
             throws UserNotFound, PaginationOutOfRange {
-
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
