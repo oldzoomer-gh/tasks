@@ -7,26 +7,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Builder
 public class UserDto {
+    @NotNull
+    private Long id;
+
     @Size(max = 50)
     @NotEmpty
     @Email
     private String email;
-
-    @Size(max = 32)
-    @NotEmpty
-    private String password;
-
-    @NotNull
-    private List<TaskDto> authorTasks;
-
-    @NotNull
-    private List<TaskDto> assignedTasks;
-
-    @NotNull
-    private List<CommentsDto> comments;
 }
