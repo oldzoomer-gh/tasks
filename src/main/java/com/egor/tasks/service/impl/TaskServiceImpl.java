@@ -53,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!task.getAuthor().equals(author)) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             taskRepository.deleteById(id);
@@ -69,8 +69,8 @@ public class TaskServiceImpl implements TaskService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!task.getAuthor().equals(user)
-                || !task.getAssigned().equals(user)) {
+        if (!task.getAuthor().getEmail().equals(user.getEmail())
+                && !task.getAssigned().getEmail().equals(user.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author, or assigned user!");
         } else {
             task.setStatus(status);
@@ -87,7 +87,7 @@ public class TaskServiceImpl implements TaskService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!task.getAuthor().equals(author)) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             task.setPriority(priority);
@@ -104,7 +104,7 @@ public class TaskServiceImpl implements TaskService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!task.getAuthor().equals(author)) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             task.setName(taskNameAndDescription.getName());
@@ -125,7 +125,7 @@ public class TaskServiceImpl implements TaskService {
         User assignedUser = userRepository.findByEmail(assignedEmail)
                 .orElseThrow(() -> new UserNotFound("Assigned user not found!"));
 
-        if (!task.getAuthor().equals(author)) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             task.setAssigned(assignedUser);

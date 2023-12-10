@@ -57,7 +57,7 @@ public class CommentsServiceImpl implements CommentsService {
         Comments comment = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
-        if (!comment.getAuthor().equals(author)) {
+        if (!comment.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             comment.setText(changes.getText());
@@ -73,7 +73,7 @@ public class CommentsServiceImpl implements CommentsService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!comments.getAuthor().equals(author)) {
+        if (!comments.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             commentsRepository.deleteById(id);

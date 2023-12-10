@@ -13,6 +13,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
