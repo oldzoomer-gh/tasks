@@ -10,5 +10,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = PasswordEncoderMapper.class)
 public interface RegistrationDataInputMapper {
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    User toEntity(LoginAndRegistrationDto dto);
+    User map(LoginAndRegistrationDto dto);
 }

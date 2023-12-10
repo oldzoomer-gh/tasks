@@ -40,7 +40,7 @@ public class CommentsServiceImpl implements CommentsService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFound("Task not found!"));
 
-        Comments comment1 = commentsInputMapper.toEntity(comment);
+        Comments comment1 = commentsInputMapper.map(comment);
 
         comment1.setAuthor(author);
         comment1.setTask(task);

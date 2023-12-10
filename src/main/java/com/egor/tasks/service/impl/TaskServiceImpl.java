@@ -36,7 +36,7 @@ public class TaskServiceImpl implements TaskService {
         User assignedUser = userRepository.findByEmail(assignedEmail)
                 .orElseThrow(() -> new UserNotFound("Assigned user not found."));
 
-        Task task1 = taskInputMapper.toEntity(task);
+        Task task1 = taskInputMapper.map(task);
 
         task1.setAuthor(author);
         task1.setAssigned(assignedUser);
