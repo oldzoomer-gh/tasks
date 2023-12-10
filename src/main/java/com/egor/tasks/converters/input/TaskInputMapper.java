@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface TaskInputMapper {
-    Task toEntity(CreateTaskDto createTaskDto);
+    Task map(CreateTaskDto createTaskDto);
 }

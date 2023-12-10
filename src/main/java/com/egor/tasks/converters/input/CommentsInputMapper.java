@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CommentsInputMapper {
-    Comments toEntity(CreateCommentsDto createCommentsDto);
+    Comments map(CreateCommentsDto createCommentsDto);
 }

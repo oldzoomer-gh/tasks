@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUser("Duplicate E-Mail.");
         }
 
-        User user = registrationDataInputMapper.toEntity(userData);
+        User user = registrationDataInputMapper.map(userData);
         assert user != null;
         userRepository.save(user);
     }
