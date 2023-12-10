@@ -66,11 +66,12 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
-        User author = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!task.getAuthor().equals(author)) {
-            throw new ForbiddenChanges("Changes of data must do only his author!");
+        if (!task.getAuthor().equals(user)
+                || !task.getAssigned().equals(user)) {
+            throw new ForbiddenChanges("Changes of data must do only his author, or assigned user!");
         } else {
             task.setStatus(status);
             taskRepository.save(task);
