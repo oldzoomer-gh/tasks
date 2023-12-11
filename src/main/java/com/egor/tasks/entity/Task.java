@@ -48,6 +48,7 @@ public class Task {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // for correctly execution of code, not error-prone
+    @Builder.Default
     @JsonBackReference
     private List<Comments> comments = new ArrayList<>();
 
