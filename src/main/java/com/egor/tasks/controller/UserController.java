@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/login")
-    public String getToken(@RequestBody LoginAndRegistrationDto loginDTO) throws UserNotFound, IncorrectPassword {
+    @PostMapping("/login")
+    public String login(@RequestBody LoginAndRegistrationDto loginDTO) throws UserNotFound, IncorrectPassword {
         return userService.login(loginDTO);
     }
 
     @PostMapping("/reg")
-    public void postMethodName(@RequestBody LoginAndRegistrationDto userDTO) throws DuplicateUser {
+    public void registration(@RequestBody LoginAndRegistrationDto userDTO) throws DuplicateUser {
         userService.reg(userDTO);
     }
 
