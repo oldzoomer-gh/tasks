@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/reg")
-    public void registration(@RequestBody LoginAndRegistrationDto userDTO) throws DuplicateUser {
+    public void reg(@RequestBody LoginAndRegistrationDto userDTO) throws DuplicateUser {
         userService.reg(userDTO);
     }
 
