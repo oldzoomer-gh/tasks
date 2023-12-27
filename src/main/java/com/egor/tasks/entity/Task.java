@@ -36,12 +36,14 @@ public class Task {
     @Column(name = "priority", nullable = false)
     private TaskPriority priority;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     @JsonBackReference
     private User author;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_id")
     @JsonBackReference
     private User assigned;
