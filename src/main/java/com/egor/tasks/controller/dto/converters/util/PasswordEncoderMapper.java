@@ -1,4 +1,4 @@
-package com.egor.tasks.converters.util;
+package com.egor.tasks.controller.dto.converters.util;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -2,9 +2,9 @@ package com.egor.tasks.service;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
-import com.egor.tasks.dto.input.CreateTaskDto;
-import com.egor.tasks.dto.output.OutputTaskDto;
+import com.egor.tasks.controller.dto.change.ChangeTaskTextDataDto;
+import com.egor.tasks.controller.dto.input.CreateTaskDto;
+import com.egor.tasks.controller.dto.output.OutputTaskDto;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;

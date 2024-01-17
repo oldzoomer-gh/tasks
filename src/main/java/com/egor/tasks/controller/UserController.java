@@ -1,12 +1,15 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.controller.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;
 import com.egor.tasks.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
