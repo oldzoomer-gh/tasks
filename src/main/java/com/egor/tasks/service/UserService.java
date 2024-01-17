@@ -1,6 +1,6 @@
 package com.egor.tasks.service;
 
-import com.egor.tasks.controller.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.controller.schema.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;

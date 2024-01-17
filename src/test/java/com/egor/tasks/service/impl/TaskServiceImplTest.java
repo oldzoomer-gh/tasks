@@ -2,13 +2,13 @@ package com.egor.tasks.service.impl;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.entity.Task;
-import com.egor.tasks.entity.User;
+import com.egor.tasks.dao.entity.Task;
+import com.egor.tasks.dao.entity.User;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
-import com.egor.tasks.repo.TaskRepository;
-import com.egor.tasks.repo.UserRepository;
+import com.egor.tasks.dao.repo.TaskRepository;
+import com.egor.tasks.dao.repo.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,8 +1,8 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.controller.dto.change.ChangeCommentsTextDataDto;
-import com.egor.tasks.controller.dto.input.CreateCommentsDto;
-import com.egor.tasks.controller.dto.output.OutputCommentsDto;
+import com.egor.tasks.controller.schema.dto.change.ChangeCommentsTextDataDto;
+import com.egor.tasks.controller.schema.dto.input.CreateCommentsDto;
+import com.egor.tasks.controller.schema.dto.output.OutputCommentsDto;
 import com.egor.tasks.exception.*;
 import com.egor.tasks.service.CommentsService;
 import lombok.AllArgsConstructor;
