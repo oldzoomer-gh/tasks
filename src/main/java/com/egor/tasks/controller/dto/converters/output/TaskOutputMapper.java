@@ -1,7 +1,7 @@
-package com.egor.tasks.converters.output;
+package com.egor.tasks.controller.dto.converters.output;
 
-import com.egor.tasks.dto.output.OutputTaskDto;
-import com.egor.tasks.dto.output.OutputUserDto;
+import com.egor.tasks.controller.dto.output.OutputTaskDto;
+import com.egor.tasks.controller.dto.output.OutputUserDto;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
 import org.mapstruct.Mapper;

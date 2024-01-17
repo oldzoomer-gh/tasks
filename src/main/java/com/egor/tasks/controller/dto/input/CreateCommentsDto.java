@@ -1,4 +1,4 @@
-package com.egor.tasks.dto.input;
+package com.egor.tasks.controller.dto.input;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

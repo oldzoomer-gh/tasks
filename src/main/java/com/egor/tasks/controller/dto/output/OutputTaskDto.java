@@ -1,4 +1,4 @@
-package com.egor.tasks.dto.output;
+package com.egor.tasks.controller.dto.output;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;

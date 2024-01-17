@@ -1,6 +1,6 @@
-package com.egor.tasks.converters.input;
+package com.egor.tasks.controller.dto.converters.input;
 
-import com.egor.tasks.dto.input.CreateCommentsDto;
+import com.egor.tasks.controller.dto.input.CreateCommentsDto;
 import com.egor.tasks.entity.Comments;
 import org.mapstruct.Mapper;
 
