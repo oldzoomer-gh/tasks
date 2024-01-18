@@ -1,4 +1,4 @@
-package com.egor.tasks.boot.config.security;
+package com.egor.tasks.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

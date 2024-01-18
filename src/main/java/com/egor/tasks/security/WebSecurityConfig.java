@@ -1,4 +1,4 @@
-package com.egor.tasks.boot.config.security;
+package com.egor.tasks.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

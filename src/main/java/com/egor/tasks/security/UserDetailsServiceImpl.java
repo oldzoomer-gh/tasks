@@ -1,4 +1,4 @@
-package com.egor.tasks.boot.config.security;
+package com.egor.tasks.security;
 
 import com.egor.tasks.repo.UserRepository;
 import lombok.AllArgsConstructor;

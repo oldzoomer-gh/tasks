@@ -1,4 +1,4 @@
-package com.egor.tasks.boot.config.security;
+package com.egor.tasks.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

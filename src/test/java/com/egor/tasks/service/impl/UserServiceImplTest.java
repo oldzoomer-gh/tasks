@@ -1,12 +1,12 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.boot.config.security.JwtUtilities;
 import com.egor.tasks.controller.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;
 import com.egor.tasks.repo.UserRepository;
+import com.egor.tasks.security.JwtUtilities;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
