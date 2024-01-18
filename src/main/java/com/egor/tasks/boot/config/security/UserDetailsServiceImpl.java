@@ -1,6 +1,6 @@
 package com.egor.tasks.boot.config.security;
 
-import com.egor.tasks.dao.repo.UserRepository;
+import com.egor.tasks.repo.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

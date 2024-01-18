@@ -2,9 +2,9 @@ package com.egor.tasks.controller;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.controller.schema.dto.change.ChangeTaskTextDataDto;
-import com.egor.tasks.controller.schema.dto.input.CreateTaskDto;
-import com.egor.tasks.controller.schema.dto.output.OutputTaskDto;
+import com.egor.tasks.controller.dto.change.ChangeTaskTextDataDto;
+import com.egor.tasks.controller.dto.input.CreateTaskDto;
+import com.egor.tasks.controller.dto.output.OutputTaskDto;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.PaginationOutOfRange;
 import com.egor.tasks.exception.TaskNotFound;
