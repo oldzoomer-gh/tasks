@@ -1,4 +1,4 @@
-package com.egor.tasks.controller.dto.change;
+package com.egor.tasks.dto.change;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

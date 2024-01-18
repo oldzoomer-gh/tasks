@@ -1,8 +1,8 @@
-package com.egor.tasks.controller.dto.converters.input;
+package com.egor.tasks.converters.input;
 
-import com.egor.tasks.controller.dto.converters.util.EncodedMapping;
-import com.egor.tasks.controller.dto.converters.util.PasswordEncoderMapper;
-import com.egor.tasks.controller.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.converters.util.EncodedMapping;
+import com.egor.tasks.converters.util.PasswordEncoderMapper;
+import com.egor.tasks.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

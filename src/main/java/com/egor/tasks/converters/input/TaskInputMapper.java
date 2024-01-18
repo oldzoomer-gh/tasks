@@ -1,6 +1,6 @@
-package com.egor.tasks.controller.dto.converters.input;
+package com.egor.tasks.converters.input;
 
-import com.egor.tasks.controller.dto.input.CreateTaskDto;
+import com.egor.tasks.dto.input.CreateTaskDto;
 import com.egor.tasks.entity.Task;
 import org.mapstruct.Mapper;
 
