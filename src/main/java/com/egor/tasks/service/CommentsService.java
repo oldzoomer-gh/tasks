@@ -1,8 +1,8 @@
 package com.egor.tasks.service;
 
-import com.egor.tasks.controller.dto.change.ChangeCommentsTextDataDto;
-import com.egor.tasks.controller.dto.input.CreateCommentsDto;
-import com.egor.tasks.controller.dto.output.OutputCommentsDto;
+import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
+import com.egor.tasks.dto.input.CreateCommentsDto;
+import com.egor.tasks.dto.output.OutputCommentsDto;
 import com.egor.tasks.exception.CommentNotFound;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;

@@ -1,7 +1,7 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.controller.dto.converters.input.RegistrationDataInputMapper;
-import com.egor.tasks.controller.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.converters.input.RegistrationDataInputMapper;
+import com.egor.tasks.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUser("Duplicate E-Mail.");
         }
 
-        User userToSave = registrationDataInputMapper.map(userData);
-        assert userToSave != null;
-        userRepository.save(userToSave);
+        User user = registrationDataInputMapper.map(userData);
+        assert user != null;
+        userRepository.save(user);
     }
 }

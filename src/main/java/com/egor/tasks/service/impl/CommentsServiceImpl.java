@@ -1,10 +1,10 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.controller.dto.change.ChangeCommentsTextDataDto;
-import com.egor.tasks.controller.dto.converters.input.CommentsInputMapper;
-import com.egor.tasks.controller.dto.converters.output.CommentsOutputMapper;
-import com.egor.tasks.controller.dto.input.CreateCommentsDto;
-import com.egor.tasks.controller.dto.output.OutputCommentsDto;
+import com.egor.tasks.converters.input.CommentsInputMapper;
+import com.egor.tasks.converters.output.CommentsOutputMapper;
+import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
+import com.egor.tasks.dto.input.CreateCommentsDto;
+import com.egor.tasks.dto.output.OutputCommentsDto;
 import com.egor.tasks.entity.Comments;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
@@ -40,12 +40,12 @@ public class CommentsServiceImpl implements CommentsService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFound("Task not found!"));
 
-        Comments commentToSave = commentsInputMapper.map(comment);
+        Comments comment1 = commentsInputMapper.map(comment);
 
-        commentToSave.setAuthor(author);
-        commentToSave.setTask(task);
+        comment1.setAuthor(author);
+        comment1.setTask(task);
 
-        commentsRepository.save(commentToSave);
+        commentsRepository.save(comment1);
     }
 
     @Override
@@ -54,26 +54,26 @@ public class CommentsServiceImpl implements CommentsService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        Comments commentToEdit = commentsRepository.findById(id)
+        Comments comment = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
-        if (!commentToEdit.getAuthor().getEmail().equals(author.getEmail())) {
+        if (!comment.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
-            commentToEdit.setText(changes.getText());
-            commentsRepository.save(commentToEdit);
+            comment.setText(changes.getText());
+            commentsRepository.save(comment);
         }
     }
 
     @Override
     public void delete(Long id, String email) throws UserNotFound, ForbiddenChanges, CommentNotFound {
-        Comments commentToDelete = commentsRepository.findById(id)
+        Comments comments = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!commentToDelete.getAuthor().getEmail().equals(author.getEmail())) {
+        if (!comments.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             commentsRepository.deleteById(id);
@@ -82,10 +82,10 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public OutputCommentsDto getComment(Long id) throws CommentNotFound {
-        Comments commentToGet = commentsRepository.findById(id)
+        Comments comment = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
-        return commentsOutputMapper.map(commentToGet);
+        return commentsOutputMapper.map(comment);
     }
 
     @Override
@@ -94,9 +94,9 @@ public class CommentsServiceImpl implements CommentsService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        Page<Comments> commentsByAuthor = commentsRepository.findAllByAuthor(author, pageable);
+        Page<Comments> comments = commentsRepository.findAllByAuthor(author, pageable);
 
-        return commentsByAuthor.map(commentsOutputMapper::map);
+        return comments.map(commentsOutputMapper::map);
     }
 
     @Override
@@ -105,8 +105,8 @@ public class CommentsServiceImpl implements CommentsService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
-        Page<Comments> commentsByTask = commentsRepository.findAllByTask(task, pageable);
+        Page<Comments> comments = commentsRepository.findAllByTask(task, pageable);
 
-        return commentsByTask.map(commentsOutputMapper::map);
+        return comments.map(commentsOutputMapper::map);
     }
 }

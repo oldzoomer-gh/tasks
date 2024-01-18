@@ -2,11 +2,11 @@ package com.egor.tasks.service.impl;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.controller.dto.change.ChangeTaskTextDataDto;
-import com.egor.tasks.controller.dto.converters.input.TaskInputMapper;
-import com.egor.tasks.controller.dto.converters.output.TaskOutputMapper;
-import com.egor.tasks.controller.dto.input.CreateTaskDto;
-import com.egor.tasks.controller.dto.output.OutputTaskDto;
+import com.egor.tasks.converters.input.TaskInputMapper;
+import com.egor.tasks.converters.output.TaskOutputMapper;
+import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
+import com.egor.tasks.dto.input.CreateTaskDto;
+import com.egor.tasks.dto.output.OutputTaskDto;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.ForbiddenChanges;
@@ -36,24 +36,24 @@ public class TaskServiceImpl implements TaskService {
         User assignedUser = userRepository.findByEmail(assignedEmail)
                 .orElseThrow(() -> new UserNotFound("Assigned user not found."));
 
-        Task taskToSave = taskInputMapper.map(task);
+        Task task1 = taskInputMapper.map(task);
 
-        taskToSave.setAuthor(author);
-        taskToSave.setAssigned(assignedUser);
+        task1.setAuthor(author);
+        task1.setAssigned(assignedUser);
 
-        taskRepository.save(taskToSave);
+        taskRepository.save(task1);
     }
 
     @Override
     public void delete(Long id, String email)
             throws TaskNotFound, UserNotFound, ForbiddenChanges {
-        Task taskToDelete = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!taskToDelete.getAuthor().getEmail().equals(author.getEmail())) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
             taskRepository.deleteById(id);
@@ -63,60 +63,60 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void editStatus(Long id, TaskStatus status, String email)
             throws TaskNotFound, UserNotFound, ForbiddenChanges {
-        Task taskToEdit = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
-        User authorOrAssignedUser = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!taskToEdit.getAuthor().getEmail().equals(authorOrAssignedUser.getEmail())
-                && !taskToEdit.getAssigned().getEmail().equals(authorOrAssignedUser.getEmail())) {
+        if (!task.getAuthor().getEmail().equals(user.getEmail())
+                && !task.getAssigned().getEmail().equals(user.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author, or assigned user!");
         } else {
-            taskToEdit.setStatus(status);
-            taskRepository.save(taskToEdit);
+            task.setStatus(status);
+            taskRepository.save(task);
         }
     }
 
     @Override
     public void editPriority(Long id, TaskPriority priority, String email)
             throws TaskNotFound, UserNotFound, ForbiddenChanges {
-        Task taskToEdit = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!taskToEdit.getAuthor().getEmail().equals(author.getEmail())) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
-            taskToEdit.setPriority(priority);
-            taskRepository.save(taskToEdit);
+            task.setPriority(priority);
+            taskRepository.save(task);
         }
     }
 
     @Override
     public void editNameAndDescription(Long id, ChangeTaskTextDataDto taskNameAndDescription,
                                        String email) throws TaskNotFound, UserNotFound, ForbiddenChanges {
-        Task taskToEdit = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        if (!taskToEdit.getAuthor().getEmail().equals(author.getEmail())) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
-            taskToEdit.setName(taskNameAndDescription.getName());
-            taskToEdit.setDescription(taskNameAndDescription.getDescription());
-            taskRepository.save(taskToEdit);
+            task.setName(taskNameAndDescription.getName());
+            task.setDescription(taskNameAndDescription.getDescription());
+            taskRepository.save(task);
         }
     }
 
     @Override
     public void editAssignedUser(Long id, String assignedEmail, String email)
             throws TaskNotFound, UserNotFound, ForbiddenChanges {
-        Task taskToEdit = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
         User author = userRepository.findByEmail(email)
@@ -125,20 +125,20 @@ public class TaskServiceImpl implements TaskService {
         User assignedUser = userRepository.findByEmail(assignedEmail)
                 .orElseThrow(() -> new UserNotFound("Assigned user not found!"));
 
-        if (!taskToEdit.getAuthor().getEmail().equals(author.getEmail())) {
+        if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChanges("Changes of data must do only his author!");
         } else {
-            taskToEdit.setAssigned(assignedUser);
-            taskRepository.save(taskToEdit);
+            task.setAssigned(assignedUser);
+            taskRepository.save(task);
         }
     }
 
     @Override
     public OutputTaskDto getTask(Long id) throws TaskNotFound {
-        Task taskToGet = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
-        return taskOutputMapper.map(taskToGet);
+        return taskOutputMapper.map(task);
     }
 
     @Override
@@ -146,8 +146,8 @@ public class TaskServiceImpl implements TaskService {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        Page<Task> tasksByAuthor = taskRepository.findAllByAuthor(author, pageable);
+        Page<Task> tasks = taskRepository.findAllByAuthor(author, pageable);
 
-        return tasksByAuthor.map(taskOutputMapper::map);
+        return tasks.map(taskOutputMapper::map);
     }
 }
