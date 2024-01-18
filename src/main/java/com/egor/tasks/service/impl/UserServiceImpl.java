@@ -1,6 +1,5 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.boot.config.security.JwtUtilities;
 import com.egor.tasks.controller.dto.converters.input.RegistrationDataInputMapper;
 import com.egor.tasks.controller.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.entity.User;
@@ -8,6 +7,7 @@ import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;
 import com.egor.tasks.repo.UserRepository;
+import com.egor.tasks.security.JwtUtilities;
 import com.egor.tasks.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
