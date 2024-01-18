@@ -2,8 +2,6 @@ package com.egor.tasks.service.impl;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.converters.input.TaskInputMapper;
-import com.egor.tasks.converters.output.TaskOutputMapper;
 import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
 import com.egor.tasks.dto.input.CreateTaskDto;
 import com.egor.tasks.dto.output.OutputTaskDto;
@@ -12,6 +10,8 @@ import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
+import com.egor.tasks.mapper.input.TaskInputMapper;
+import com.egor.tasks.mapper.output.TaskOutputMapper;
 import com.egor.tasks.repo.TaskRepository;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.service.TaskService;

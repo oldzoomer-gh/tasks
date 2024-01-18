@@ -1,4 +1,4 @@
-package com.egor.tasks.converters.util;
+package com.egor.tasks.mapper.util;
 
 import org.mapstruct.Qualifier;
 

@@ -1,11 +1,11 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.converters.input.RegistrationDataInputMapper;
 import com.egor.tasks.dto.input.LoginAndRegistrationDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;
+import com.egor.tasks.mapper.input.RegistrationDataInputMapper;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.security.JwtUtilities;
 import com.egor.tasks.service.UserService;
