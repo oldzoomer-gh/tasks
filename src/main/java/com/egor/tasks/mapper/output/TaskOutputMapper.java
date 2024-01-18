@@ -1,4 +1,4 @@
-package com.egor.tasks.converters.output;
+package com.egor.tasks.mapper.output;
 
 import com.egor.tasks.dto.output.OutputTaskDto;
 import com.egor.tasks.dto.output.OutputUserDto;

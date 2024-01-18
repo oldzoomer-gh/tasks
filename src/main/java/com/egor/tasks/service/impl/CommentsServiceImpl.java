@@ -1,7 +1,5 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.converters.input.CommentsInputMapper;
-import com.egor.tasks.converters.output.CommentsOutputMapper;
 import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
 import com.egor.tasks.dto.input.CreateCommentsDto;
 import com.egor.tasks.dto.output.OutputCommentsDto;
@@ -12,6 +10,8 @@ import com.egor.tasks.exception.CommentNotFound;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
+import com.egor.tasks.mapper.input.CommentsInputMapper;
+import com.egor.tasks.mapper.output.CommentsOutputMapper;
 import com.egor.tasks.repo.CommentsRepository;
 import com.egor.tasks.repo.TaskRepository;
 import com.egor.tasks.repo.UserRepository;

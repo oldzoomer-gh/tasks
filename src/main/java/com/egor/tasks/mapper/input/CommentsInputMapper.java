@@ -1,4 +1,4 @@
-package com.egor.tasks.converters.input;
+package com.egor.tasks.mapper.input;
 
 import com.egor.tasks.dto.input.CreateCommentsDto;
 import com.egor.tasks.entity.Comments;
