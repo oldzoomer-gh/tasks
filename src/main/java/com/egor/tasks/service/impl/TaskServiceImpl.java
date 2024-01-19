@@ -30,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskOutputMapper taskOutputMapper;
 
     @Override
-    public void create(CreateTaskDto task, String email, String assignedEmail) throws UserNotFound {
+    public void create(CreateTaskDto task, String email, String assignedEmail) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("Author not found."));
         User assignedUser = userRepository.findByEmail(assignedEmail)
@@ -45,8 +45,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void delete(Long id, String email)
-            throws TaskNotFound, UserNotFound, ForbiddenChanges {
+    public void delete(Long id, String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -61,8 +60,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void editStatus(Long id, TaskStatus status, String email)
-            throws TaskNotFound, UserNotFound, ForbiddenChanges {
+    public void editStatus(Long id, TaskStatus status, String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -79,8 +77,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void editPriority(Long id, TaskPriority priority, String email)
-            throws TaskNotFound, UserNotFound, ForbiddenChanges {
+    public void editPriority(Long id, TaskPriority priority, String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -97,7 +94,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void editNameAndDescription(Long id, ChangeTaskTextDataDto taskNameAndDescription,
-                                       String email) throws TaskNotFound, UserNotFound, ForbiddenChanges {
+                                       String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -114,8 +111,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void editAssignedUser(Long id, String assignedEmail, String email)
-            throws TaskNotFound, UserNotFound, ForbiddenChanges {
+    public void editAssignedUser(Long id, String assignedEmail, String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -134,7 +130,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public OutputTaskDto getTask(Long id) throws TaskNotFound {
+    public OutputTaskDto getTask(Long id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -142,7 +138,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<OutputTaskDto> getMultipleTasksForUser(String email, Pageable pageable) throws UserNotFound {
+    public Page<OutputTaskDto> getMultipleTasksForUser(String email, Pageable pageable) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 

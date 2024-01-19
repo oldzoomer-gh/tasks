@@ -3,7 +3,7 @@ package com.egor.tasks.controller;
 import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
 import com.egor.tasks.dto.input.CreateCommentsDto;
 import com.egor.tasks.dto.output.OutputCommentsDto;
-import com.egor.tasks.exception.*;
+import com.egor.tasks.exception.PaginationOutOfRange;
 import com.egor.tasks.service.CommentsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/1.0/comments")
 @AllArgsConstructor
 public class CommentsController {
     private final CommentsService commentsService;
@@ -21,7 +21,7 @@ public class CommentsController {
     @PostMapping("/create")
     public void createComment(@RequestBody CreateCommentsDto comment,
                               @RequestParam Long taskId,
-                              Authentication authentication) throws UserNotFound, TaskNotFound {
+                              Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.create(comment, taskId, authorEmail);
@@ -30,8 +30,7 @@ public class CommentsController {
     @PutMapping("/edit")
     public void editComment(@RequestBody ChangeCommentsTextDataDto changes,
                             @RequestParam Long id,
-                            Authentication authentication)
-            throws UserNotFound, ForbiddenChanges, CommentNotFound {
+                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.edit(id, changes, authorEmail);
@@ -39,23 +38,21 @@ public class CommentsController {
 
     @DeleteMapping("/delete")
     public void deleteComment(@RequestParam Long id,
-                           Authentication authentication)
-            throws UserNotFound, ForbiddenChanges, CommentNotFound {
+                           Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.delete(id, authorEmail);
     }
 
     @GetMapping("/getComment")
-    public OutputCommentsDto getComment(@RequestParam Long id) throws CommentNotFound {
+    public OutputCommentsDto getComment(@RequestParam Long id) {
         return commentsService.getComment(id);
     }
 
     @GetMapping("/getAllCommentsForUser")
     public Page<OutputCommentsDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
-                                                  @RequestParam String email)
-            throws UserNotFound, PaginationOutOfRange {
+                                                  @RequestParam String email) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
@@ -68,8 +65,7 @@ public class CommentsController {
     @GetMapping("/getAllCommentsForTask")
     public Page<OutputCommentsDto> getAllTasksForTask(@RequestParam int start,
                                                       @RequestParam int end,
-                                                      @RequestParam long taskId)
-            throws PaginationOutOfRange, TaskNotFound {
+                                                      @RequestParam long taskId) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
