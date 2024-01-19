@@ -27,8 +27,8 @@ public class WebSecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/api/tasks/**").authenticated()
-                        .requestMatchers("/api/comments/**").authenticated()
+                        .requestMatchers("/api/1.0/tasks/**").authenticated()
+                        .requestMatchers("/api/1.0/comments/**").authenticated()
                         .anyRequest().permitAll());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
