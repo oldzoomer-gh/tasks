@@ -38,7 +38,7 @@ public class UserController {
     @Operation(summary = "Register the user for using this service",
                 responses = {
                         @ApiResponse(description = "User is registered",
-                                useReturnTypeSchema = true),
+                                responseCode = "200"),
                         @ApiResponse(responseCode = "409",
                                 description = "Duplicate registration data")
                 })
