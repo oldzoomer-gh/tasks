@@ -29,16 +29,16 @@ public class TaskController {
         taskService.create(taskDto, authorEmail, assignedEmail);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteTask(@RequestParam Long id,
+    @DeleteMapping("/{id}/delete")
+    public void deleteTask(@PathVariable Long id,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.delete(id, authorEmail);
     }
 
-    @PutMapping("/editStatus")
-    public void editStatus(@RequestParam Long id,
+    @PutMapping("/{id}/editStatus")
+    public void editStatus(@PathVariable Long id,
                            @RequestParam TaskStatus status,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -46,8 +46,8 @@ public class TaskController {
         taskService.editStatus(id, status, authorEmail);
     }
 
-    @PutMapping("/editPriority")
-    public void editPriority(@RequestParam Long id,
+    @PutMapping("/{id}/editPriority")
+    public void editPriority(@PathVariable Long id,
                              @RequestParam TaskPriority priority,
                              Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -55,8 +55,8 @@ public class TaskController {
         taskService.editPriority(id, priority, authorEmail);
     }
 
-    @PutMapping("/editNameAndDescription")
-    public void editNameAndDescription(@RequestParam Long id,
+    @PutMapping("/{id}/editNameAndDescription")
+    public void editNameAndDescription(@PathVariable Long id,
                                        @RequestBody ChangeTaskTextDataDto textDataDto,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -64,8 +64,8 @@ public class TaskController {
         taskService.editNameAndDescription(id, textDataDto, authorEmail);
     }
 
-    @PutMapping("/editAssignedUser")
-    public void editAssignedUser(@RequestParam Long id,
+    @PutMapping("/{id}/editAssignedUser")
+    public void editAssignedUser(@PathVariable Long id,
                              @RequestParam String assignedEmail,
                              Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -73,8 +73,8 @@ public class TaskController {
         taskService.editAssignedUser(id, assignedEmail, authorEmail);
     }
 
-    @GetMapping("/getTask")
-    public OutputTaskDto getTask(@RequestParam Long id) {
+    @GetMapping("/{id}/getTask")
+    public OutputTaskDto getTask(@PathVariable Long id) {
         return taskService.getTask(id);
     }
 

@@ -18,34 +18,34 @@ import org.springframework.web.bind.annotation.*;
 public class CommentsController {
     private final CommentsService commentsService;
 
-    @PostMapping("/create")
+    @PostMapping("/{taskId}/create")
     public void createComment(@RequestBody CreateCommentsDto comment,
-                              @RequestParam Long taskId,
+                              @PathVariable Long taskId,
                               Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.create(comment, taskId, authorEmail);
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/{id}/edit")
     public void editComment(@RequestBody ChangeCommentsTextDataDto changes,
-                            @RequestParam Long id,
+                            @PathVariable Long id,
                             Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.edit(id, changes, authorEmail);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteComment(@RequestParam Long id,
+    @DeleteMapping("/{id}/delete")
+    public void deleteComment(@PathVariable Long id,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.delete(id, authorEmail);
     }
 
-    @GetMapping("/getComment")
-    public OutputCommentsDto getComment(@RequestParam Long id) {
+    @GetMapping("/{id}/getComment")
+    public OutputCommentsDto getComment(@PathVariable Long id) {
         return commentsService.getComment(id);
     }
 
@@ -62,10 +62,10 @@ public class CommentsController {
         return commentsService.getMultipleCommentsForUser(email, pageable);
     }
 
-    @GetMapping("/getAllCommentsForTask")
+    @GetMapping("/{taskId}/getAllCommentsForTask")
     public Page<OutputCommentsDto> getAllTasksForTask(@RequestParam int start,
                                                       @RequestParam int end,
-                                                      @RequestParam long taskId) {
+                                                      @PathVariable long taskId) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
