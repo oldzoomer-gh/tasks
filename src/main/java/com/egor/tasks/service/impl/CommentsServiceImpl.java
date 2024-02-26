@@ -32,7 +32,7 @@ public class CommentsServiceImpl implements CommentsService {
     private final CommentsOutputMapper commentsOutputMapper;
 
     @Override
-    public void create(CreateCommentsDto comment, Long taskId, String email) {
+    public void create(CreateCommentsDto comment, Long taskId, String email) throws UserNotFound, TaskNotFound {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("Author not found."));
 
@@ -49,7 +49,7 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public void edit(Long id, ChangeCommentsTextDataDto changes,
-                     String email) {
+                     String email) throws UserNotFound, CommentNotFound, ForbiddenChanges {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
@@ -65,7 +65,7 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public void delete(Long id, String email) {
+    public void delete(Long id, String email) throws CommentNotFound, UserNotFound, ForbiddenChanges {
         Comments comments = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
@@ -80,7 +80,7 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public OutputCommentsDto getComment(Long id) {
+    public OutputCommentsDto getComment(Long id) throws CommentNotFound {
         Comments comment = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
@@ -89,7 +89,7 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public Page<OutputCommentsDto> getMultipleCommentsForUser(String email,
-                                                              Pageable pageable) {
+                                                              Pageable pageable) throws UserNotFound {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
@@ -100,7 +100,7 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public Page<OutputCommentsDto> getMultipleCommentsForTask(Long taskId,
-                                                              Pageable pageable) {
+                                                              Pageable pageable) throws TaskNotFound {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 

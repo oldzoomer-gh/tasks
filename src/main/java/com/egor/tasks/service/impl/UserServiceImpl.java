@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public String login(LoginAndRegistrationDto loginData) {
+    public String login(LoginAndRegistrationDto loginData) throws IncorrectPassword, UserNotFound {
         String email = loginData.getEmail();
         String password = loginData.getPassword();
 
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void reg(LoginAndRegistrationDto userData) {
+    public void reg(LoginAndRegistrationDto userData) throws DuplicateUser {
         boolean emailIsExist =
                 userRepository.existsByEmail(userData.getEmail());
 
