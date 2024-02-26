@@ -87,7 +87,7 @@ class TaskServiceImplTest {
     }
 
     @Test
-    void editStatusAsNotAuthorOrAssigned() throws UserNotFound, ForbiddenChanges, TaskNotFound {
+    void editStatusAsNotAuthorOrAssigned() {
         User user1 = User.builder()
                 .id(0L)
                 .email("1@1.ru")

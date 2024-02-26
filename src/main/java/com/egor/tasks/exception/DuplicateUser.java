@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate user!")
-public class DuplicateUser extends RuntimeException {
+public class DuplicateUser extends Exception {
     public DuplicateUser() {
         super();
     }

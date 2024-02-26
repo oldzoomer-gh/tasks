@@ -3,7 +3,7 @@ package com.egor.tasks.controller;
 import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
 import com.egor.tasks.dto.input.CreateCommentsDto;
 import com.egor.tasks.dto.output.OutputCommentsDto;
-import com.egor.tasks.exception.PaginationOutOfRange;
+import com.egor.tasks.exception.*;
 import com.egor.tasks.service.CommentsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ public class CommentsController {
     @PostMapping("/{taskId}/create")
     public void createComment(@RequestBody CreateCommentsDto comment,
                               @PathVariable Long taskId,
-                              Authentication authentication) {
+                              Authentication authentication) throws UserNotFound, TaskNotFound {
         String authorEmail = authentication.getName();
 
         commentsService.create(comment, taskId, authorEmail);
@@ -30,7 +30,7 @@ public class CommentsController {
     @PutMapping("/{id}/edit")
     public void editComment(@RequestBody ChangeCommentsTextDataDto changes,
                             @PathVariable Long id,
-                            Authentication authentication) {
+                            Authentication authentication) throws UserNotFound, ForbiddenChanges, CommentNotFound {
         String authorEmail = authentication.getName();
 
         commentsService.edit(id, changes, authorEmail);
@@ -38,21 +38,21 @@ public class CommentsController {
 
     @DeleteMapping("/{id}/delete")
     public void deleteComment(@PathVariable Long id,
-                           Authentication authentication) {
+                           Authentication authentication) throws UserNotFound, ForbiddenChanges, CommentNotFound {
         String authorEmail = authentication.getName();
 
         commentsService.delete(id, authorEmail);
     }
 
     @GetMapping("/{id}/getComment")
-    public OutputCommentsDto getComment(@PathVariable Long id) {
+    public OutputCommentsDto getComment(@PathVariable Long id) throws CommentNotFound {
         return commentsService.getComment(id);
     }
 
     @GetMapping("/getAllCommentsForUser")
     public Page<OutputCommentsDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
-                                                  @RequestParam String email) {
+                                                  @RequestParam String email) throws PaginationOutOfRange, UserNotFound {
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
@@ -65,7 +65,7 @@ public class CommentsController {
     @GetMapping("/{taskId}/getAllCommentsForTask")
     public Page<OutputCommentsDto> getAllTasksForTask(@RequestParam int start,
                                                       @RequestParam int end,
-                                                      @PathVariable long taskId) {
+                                                      @PathVariable long taskId) throws PaginationOutOfRange, TaskNotFound {
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
