@@ -1,6 +1,7 @@
 package com.egor.tasks.controller;
 
 import com.egor.tasks.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.dto.output.TokenDto;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;
@@ -28,7 +29,7 @@ public class UserController {
                         @ApiResponse(responseCode = "403",
                                 description = "User not found, or incorrect password")
                 })
-    public String login(@Parameter(description = "Login data", required = true)
+    public TokenDto login(@Parameter(description = "Login data", required = true)
                             @RequestBody LoginAndRegistrationDto loginDTO)
                                 throws UserNotFound, IncorrectPassword {
         return userService.login(loginDTO);

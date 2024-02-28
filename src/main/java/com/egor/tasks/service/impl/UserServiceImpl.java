@@ -1,6 +1,7 @@
 package com.egor.tasks.service.impl;
 
 import com.egor.tasks.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.dto.output.TokenDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public String login(LoginAndRegistrationDto loginData) throws IncorrectPassword, UserNotFound {
+    public TokenDto login(LoginAndRegistrationDto loginData) throws IncorrectPassword, UserNotFound {
         String email = loginData.getEmail();
         String password = loginData.getPassword();
 
@@ -32,7 +33,9 @@ public class UserServiceImpl implements UserService {
             throw new IncorrectPassword("Incorrect password!");
         }
 
-        return jwtUtilities.generateToken(user.getUsername(), "ROLE_USER");
+        return TokenDto.builder()
+                .token(jwtUtilities.generateToken(user.getUsername(), "ROLE_USER"))
+                .build();
     }
 
     @Override
