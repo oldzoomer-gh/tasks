@@ -37,15 +37,14 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUser() throws UserNotFound, IncorrectPassword {
-        var loginDTO = LoginAndRegistrationDto.builder()
-                .email("1@1.ru")
-                .password("test")
-                .build();
 
-        var user = User.builder()
-                .email(loginDTO.getEmail())
-                .password(passwordEncoder.encode(loginDTO.getPassword()))
-                .build();
+        var loginDTO = new LoginAndRegistrationDto();
+        loginDTO.setEmail("1@1.ru");
+        loginDTO.setPassword("test");
+
+        var user = new User();
+        user.setEmail(loginDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
@@ -54,15 +53,14 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-        var loginDTO = LoginAndRegistrationDto.builder()
-                .email("1@1.ru")
-                .password("test")
-                .build();
 
-        var user = User.builder()
-                .email(loginDTO.getEmail())
-                .password(passwordEncoder.encode("test2"))
-                .build();
+        var loginDTO = new LoginAndRegistrationDto();
+        loginDTO.setEmail("1@1.ru");
+        loginDTO.setPassword("test");
+
+        var user = new User();
+        user.setEmail(loginDTO.getEmail());
+        user.setPassword(passwordEncoder.encode("test2"));
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
@@ -71,19 +69,18 @@ class UserServiceImplTest {
 
     @Test
     void loginWithNotExistUser() {
-        var loginDTO = LoginAndRegistrationDto.builder()
-                .email("test1")
-                .password("test")
-                .build();
+
+        var loginDTO = new LoginAndRegistrationDto();
+        loginDTO.setEmail("test1");
 
         assertThrows(UserNotFound.class, () -> userService.login(loginDTO));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
-        var userData = LoginAndRegistrationDto.builder()
-                .email("1@1.ru")
-                .build();
+
+        var userData = new LoginAndRegistrationDto();
+        userData.setEmail("1@1.ru");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
 

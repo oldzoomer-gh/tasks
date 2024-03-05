@@ -32,25 +32,23 @@ class TaskServiceImplTest {
 
     @Test
     void editStatusAsAuthor() throws UserNotFound, ForbiddenChanges, TaskNotFound {
-        User user1 = User.builder()
-                .id(0L)
-                .email("1@1.ru")
-                .build();
 
-        User user2 = User.builder()
-                .id(1L)
-                .email("2@1.ru")
-                .build();
+        var user1 = new User();
+        user1.setId(0L);
+        user1.setEmail("1@1.ru");
 
-        Task task = Task.builder()
-                .id(0L)
-                .name("Test")
-                .description("Test task.")
-                .author(user1)
-                .assigned(user2)
-                .status(TaskStatus.PENDING)
-                .priority(TaskPriority.LOW)
-                .build();
+        var user2 = new User();
+        user2.setId(1L);
+        user2.setEmail("2@1.ru");
+
+        var task = new Task();
+        task.setId(0L);
+        task.setName("Test");
+        task.setDescription("Test task.");
+        task.setAuthor(user1);
+        task.setAssigned(user2);
+        task.setStatus(TaskStatus.PENDING);
+        task.setPriority(TaskPriority.LOW);
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user1));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
@@ -60,25 +58,23 @@ class TaskServiceImplTest {
 
     @Test
     void editStatusAsAssigned() throws UserNotFound, ForbiddenChanges, TaskNotFound {
-        User user1 = User.builder()
-                .id(0L)
-                .email("1@1.ru")
-                .build();
 
-        User user2 = User.builder()
-                .id(1L)
-                .email("2@1.ru")
-                .build();
+        var user1 = new User();
+        user1.setId(0L);
+        user1.setEmail("1@1.ru");
 
-        Task task = Task.builder()
-                .id(0L)
-                .name("Test")
-                .description("Test task.")
-                .author(user1)
-                .assigned(user2)
-                .status(TaskStatus.PENDING)
-                .priority(TaskPriority.LOW)
-                .build();
+        var user2 = new User();
+        user2.setId(1L);
+        user2.setEmail("2@1.ru");
+
+        var task = new Task();
+        task.setId(0L);
+        task.setName("Test");
+        task.setDescription("Test task.");
+        task.setAuthor(user1);
+        task.setAssigned(user2);
+        task.setStatus(TaskStatus.PENDING);
+        task.setPriority(TaskPriority.LOW);
 
         when(userRepository.findByEmail("2@1.ru")).thenReturn(Optional.of(user2));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
@@ -88,30 +84,27 @@ class TaskServiceImplTest {
 
     @Test
     void editStatusAsNotAuthorOrAssigned() {
-        User user1 = User.builder()
-                .id(0L)
-                .email("1@1.ru")
-                .build();
 
-        User user2 = User.builder()
-                .id(1L)
-                .email("2@1.ru")
-                .build();
+        var user1 = new User();
+        user1.setId(0L);
+        user1.setEmail("1@1.ru");
 
-        User user3 = User.builder()
-                .id(2L)
-                .email("3@1.ru")
-                .build();
+        var user2 = new User();
+        user2.setId(1L);
+        user2.setEmail("2@1.ru");
 
-        Task task = Task.builder()
-                .id(0L)
-                .name("Test")
-                .description("Test task.")
-                .author(user1)
-                .assigned(user2)
-                .status(TaskStatus.PENDING)
-                .priority(TaskPriority.LOW)
-                .build();
+        var user3 = new User();
+        user3.setId(2L);
+        user3.setEmail("3@1.ru");
+
+        var task = new Task();
+        task.setId(0L);
+        task.setName("Test");
+        task.setDescription("Test task.");
+        task.setAuthor(user1);
+        task.setAssigned(user2);
+        task.setStatus(TaskStatus.PENDING);
+        task.setPriority(TaskPriority.LOW);
 
         when(userRepository.findByEmail("3@1.ru")).thenReturn(Optional.of(user3));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
