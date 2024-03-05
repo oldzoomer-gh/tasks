@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
             throw new IncorrectPassword("Incorrect password!");
         }
 
-        return TokenDto.builder()
-                .token(jwtUtilities.generateToken(user.getUsername(), "ROLE_USER"))
-                .build();
+        TokenDto tokenDto = new TokenDto();
+        tokenDto.setToken(jwtUtilities.generateToken(user.getUsername(), "ROLE_USER"));
+        return tokenDto;
     }
 
     @Override
