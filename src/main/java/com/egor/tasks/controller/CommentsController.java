@@ -5,6 +5,7 @@ import com.egor.tasks.dto.input.CreateCommentsDto;
 import com.egor.tasks.dto.output.OutputCommentsDto;
 import com.egor.tasks.exception.*;
 import com.egor.tasks.service.CommentsService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,7 @@ public class CommentsController {
     private final CommentsService commentsService;
 
     @PostMapping("/{taskId}/create")
-    public void createComment(@RequestBody CreateCommentsDto comment,
+    public void createComment(@RequestBody @Valid CreateCommentsDto comment,
                               @PathVariable Long taskId,
                               Authentication authentication) throws UserNotFound, TaskNotFound {
         String authorEmail = authentication.getName();
@@ -28,7 +29,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{id}/edit")
-    public void editComment(@RequestBody ChangeCommentsTextDataDto changes,
+    public void editComment(@RequestBody @Valid ChangeCommentsTextDataDto changes,
                             @PathVariable Long id,
                             Authentication authentication) throws UserNotFound, ForbiddenChanges, CommentNotFound {
         String authorEmail = authentication.getName();

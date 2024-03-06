@@ -1,10 +1,10 @@
 package com.egor.tasks.dto.output;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class TokenDto {
-    @NotEmpty
     private String token;
 }
