@@ -9,6 +9,7 @@ import com.egor.tasks.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class UserController {
                                 description = "User not found, or incorrect password")
                 })
     public TokenDto login(@Parameter(description = "Login data", required = true)
-                            @RequestBody LoginAndRegistrationDto loginDTO)
+                            @RequestBody @Valid LoginAndRegistrationDto loginDTO)
                                 throws UserNotFound, IncorrectPassword {
         return userService.login(loginDTO);
     }
@@ -44,7 +45,7 @@ public class UserController {
                                 description = "Duplicate registration data")
                 })
     public void reg(@Parameter(description = "Registration data", required = true)
-                        @RequestBody LoginAndRegistrationDto userDTO) throws DuplicateUser {
+                        @RequestBody @Valid LoginAndRegistrationDto userDTO) throws DuplicateUser {
         userService.reg(userDTO);
     }
 

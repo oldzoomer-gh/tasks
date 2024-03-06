@@ -10,6 +10,7 @@ import com.egor.tasks.exception.PaginationOutOfRange;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
 import com.egor.tasks.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/create")
-    public void createTask(@RequestBody CreateTaskDto taskDto,
+    public void createTask(@RequestBody @Valid CreateTaskDto taskDto,
                            @RequestParam String assignedEmail,
                            Authentication authentication) throws UserNotFound {
         String authorEmail = authentication.getName();
@@ -60,7 +61,7 @@ public class TaskController {
 
     @PutMapping("/{id}/editNameAndDescription")
     public void editNameAndDescription(@PathVariable Long id,
-                                       @RequestBody ChangeTaskTextDataDto textDataDto,
+                                       @RequestBody @Valid ChangeTaskTextDataDto textDataDto,
                                        Authentication authentication) throws UserNotFound, ForbiddenChanges, TaskNotFound {
         String authorEmail = authentication.getName();
 
