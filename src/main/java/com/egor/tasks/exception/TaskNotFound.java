@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Task not found.")
-public class TaskNotFound extends Exception {
+public class TaskNotFound extends RuntimeException {
     public TaskNotFound() {
         super();
     }

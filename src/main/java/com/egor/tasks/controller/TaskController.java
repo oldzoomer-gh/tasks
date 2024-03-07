@@ -5,10 +5,7 @@ import com.egor.tasks.constant.TaskStatus;
 import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
 import com.egor.tasks.dto.input.CreateTaskDto;
 import com.egor.tasks.dto.output.OutputTaskDto;
-import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.PaginationOutOfRange;
-import com.egor.tasks.exception.TaskNotFound;
-import com.egor.tasks.exception.UserNotFound;
 import com.egor.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,7 +24,7 @@ public class TaskController {
     @PostMapping("/create")
     public void createTask(@RequestBody @Valid CreateTaskDto taskDto,
                            @RequestParam String assignedEmail,
-                           Authentication authentication) throws UserNotFound {
+                           Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.create(taskDto, authorEmail, assignedEmail);
@@ -35,7 +32,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}/delete")
     public void deleteTask(@PathVariable Long id,
-                           Authentication authentication) throws UserNotFound, ForbiddenChanges, TaskNotFound {
+                           Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.delete(id, authorEmail);
@@ -44,7 +41,7 @@ public class TaskController {
     @PutMapping("/{id}/editStatus")
     public void editStatus(@PathVariable Long id,
                            @RequestParam TaskStatus status,
-                           Authentication authentication) throws UserNotFound, ForbiddenChanges, TaskNotFound {
+                           Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.editStatus(id, status, authorEmail);
@@ -53,7 +50,7 @@ public class TaskController {
     @PutMapping("/{id}/editPriority")
     public void editPriority(@PathVariable Long id,
                              @RequestParam TaskPriority priority,
-                             Authentication authentication) throws UserNotFound, ForbiddenChanges, TaskNotFound {
+                             Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.editPriority(id, priority, authorEmail);
@@ -62,7 +59,7 @@ public class TaskController {
     @PutMapping("/{id}/editNameAndDescription")
     public void editNameAndDescription(@PathVariable Long id,
                                        @RequestBody @Valid ChangeTaskTextDataDto textDataDto,
-                                       Authentication authentication) throws UserNotFound, ForbiddenChanges, TaskNotFound {
+                                       Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.editNameAndDescription(id, textDataDto, authorEmail);
@@ -71,21 +68,21 @@ public class TaskController {
     @PutMapping("/{id}/editAssignedUser")
     public void editAssignedUser(@PathVariable Long id,
                              @RequestParam String assignedEmail,
-                             Authentication authentication) throws UserNotFound, ForbiddenChanges, TaskNotFound {
+                             Authentication authentication) {
         String authorEmail = authentication.getName();
 
         taskService.editAssignedUser(id, assignedEmail, authorEmail);
     }
 
     @GetMapping("/{id}/getTask")
-    public OutputTaskDto getTask(@PathVariable Long id) throws TaskNotFound {
+    public OutputTaskDto getTask(@PathVariable Long id) {
         return taskService.getTask(id);
     }
 
     @GetMapping("/getAllTasksForUser")
     public Page<OutputTaskDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
-                                                  @RequestParam String email) throws PaginationOutOfRange, UserNotFound {
+                                                  @RequestParam String email) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRange("Out of range!");
         }
