@@ -12,11 +12,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/1.0/tasks")
+@PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
 public class TaskController {
     private final TaskService taskService;
