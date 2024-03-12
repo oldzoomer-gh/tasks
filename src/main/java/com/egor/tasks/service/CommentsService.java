@@ -14,14 +14,14 @@ public interface CommentsService {
     /**
      * Create new comment
      * @param comment Comment to create. Must contain text.
-     * @param taskId Id of task.
+     * @param taskId ID of task.
      * @param email Email of author.
      */
     void create(CreateCommentsDto comment, Long taskId, String email);
 
     /**
      * Change text of comment
-     * @param id Id of comment.
+     * @param id ID of comment.
      * @param changes Changes to apply.
      * @param email Email of author.
      */
@@ -29,14 +29,14 @@ public interface CommentsService {
 
     /**
      * Delete comment
-     * @param id Id of comment.
+     * @param id ID of comment.
      * @param email Email of author.
      */
     void delete(Long id, String email);
 
     /**
      * Get a comment
-     * @param id Id of comment.
+     * @param id ID of comment.
      * @return Comment.
      */
     OutputCommentsDto getComment(Long id);
@@ -51,7 +51,7 @@ public interface CommentsService {
 
     /**
      * Get all comments for task
-     * @param taskId Id of task.
+     * @param taskId ID of task.
      * @param pageable Pageable object.
      * @return Page of comments.
      */
