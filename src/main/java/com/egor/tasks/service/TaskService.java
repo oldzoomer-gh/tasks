@@ -12,12 +12,12 @@ import org.springframework.data.domain.Pageable;
  */
 public interface TaskService {
     /**
-     * Creates a new task.
-     * @param task Task to create
-     * @param email Email of the user who creates the task
-     * @param assignedEmail Email of the user assigned to the task
+     * Creates a new taskDto.
+     * @param taskDto Task to create
+     * @param email Email of the user who creates the taskDto
+     * @param assignedEmail Email of the user assigned to the taskDto
      */
-    void create(TaskDto task, String email, String assignedEmail);
+    void create(TaskDto taskDto, String email, String assignedEmail);
 
     /**
      * Deletes a task.
@@ -45,10 +45,10 @@ public interface TaskService {
     /**
      * Updates a task text.
      * @param id ID of the task to update
-     * @param taskNameAndDescription New text of the task
+     * @param taskDto New text of the task
      * @param email Email of the user who updates the task
      */
-    void editNameAndDescription(Long id, TaskDto taskNameAndDescription, String email);
+    void editNameAndDescription(Long id, TaskDto taskDto, String email);
 
     /**
      * Edit assigned user.

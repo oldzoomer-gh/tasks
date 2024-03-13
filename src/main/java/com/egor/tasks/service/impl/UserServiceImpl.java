@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public TokenDto login(UserDto loginData) {
-        String email = loginData.getEmail();
-        String password = loginData.getPassword();
+    public TokenDto login(UserDto userDto) {
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found."));
 
@@ -39,15 +39,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void reg(UserDto userData) {
+    public void reg(UserDto userDto) {
         boolean emailIsExist =
-                userRepository.existsByEmail(userData.getEmail());
+                userRepository.existsByEmail(userDto.getEmail());
 
         if (emailIsExist) {
             throw new DuplicateUserException("Duplicate E-Mail.");
         }
 
-        User user = registrationDataInputMapper.map(userData);
+        User user = registrationDataInputMapper.map(userDto);
         userRepository.save(user);
     }
 }

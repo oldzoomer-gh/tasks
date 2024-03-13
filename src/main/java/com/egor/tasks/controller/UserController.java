@@ -28,8 +28,8 @@ public class UserController {
                                 description = "User not found, or incorrect password")
                 })
     public TokenDto login(@Parameter(description = "Login data", required = true)
-                            @RequestBody @Valid UserDto loginDTO) {
-        return userService.login(loginDTO);
+                            @RequestBody @Valid UserDto userDto) {
+        return userService.login(userDto);
     }
 
     @PostMapping("/reg")
@@ -41,8 +41,8 @@ public class UserController {
                                 description = "Duplicate registration data")
                 })
     public void reg(@Parameter(description = "Registration data", required = true)
-                        @RequestBody @Valid UserDto userDTO) {
-        userService.reg(userDTO);
+                        @RequestBody @Valid UserDto userDto) {
+        userService.reg(userDto);
     }
 
 }

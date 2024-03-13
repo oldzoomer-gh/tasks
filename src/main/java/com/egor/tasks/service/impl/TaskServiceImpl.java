@@ -26,13 +26,13 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
 
     @Override
-    public void create(TaskDto task, String email, String assignedEmail) {
+    public void create(TaskDto taskDto, String email, String assignedEmail) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Author not found."));
         User assignedUser = userRepository.findByEmail(assignedEmail)
                 .orElseThrow(() -> new UserNotFoundException("Assigned user not found."));
 
-        Task task1 = taskMapper.map(task);
+        Task task1 = taskMapper.map(taskDto);
 
         task1.setAuthor(author);
         task1.setAssigned(assignedUser);
@@ -90,7 +90,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void editNameAndDescription(
-            Long id, TaskDto taskNameAndDescription, String email) {
+            Long id, TaskDto taskDto, String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found."));
 
@@ -100,8 +100,8 @@ public class TaskServiceImpl implements TaskService {
         if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChangesException("Changes of data must do only his author!");
         } else {
-            task.setName(taskNameAndDescription.getName());
-            task.setDescription(taskNameAndDescription.getDescription());
+            task.setName(taskDto.getName());
+            task.setDescription(taskDto.getDescription());
             taskRepository.save(task);
         }
     }
