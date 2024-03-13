@@ -4,24 +4,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Comment not found.")
-public class CommentNotFound extends RuntimeException {
-    public CommentNotFound() {
+public class CommentNotFoundException extends RuntimeException {
+    public CommentNotFoundException() {
         super();
     }
 
-    public CommentNotFound(String message) {
+    public CommentNotFoundException(String message) {
         super(message);
     }
 
-    public CommentNotFound(String message, Throwable cause) {
+    public CommentNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public CommentNotFound(Throwable cause) {
+    public CommentNotFoundException(Throwable cause) {
         super(cause);
     }
 
-    protected CommentNotFound(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected CommentNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

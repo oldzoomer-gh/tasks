@@ -1,7 +1,7 @@
 package com.egor.tasks.controller;
 
 import com.egor.tasks.dto.CommentDto;
-import com.egor.tasks.exception.PaginationOutOfRange;
+import com.egor.tasks.exception.PaginationOutOfRangeException;
 import com.egor.tasks.service.CommentsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -55,7 +55,7 @@ public class CommentsController {
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
         if ((end - start) < 1) {
-            throw new PaginationOutOfRange("Out of range!");
+            throw new PaginationOutOfRangeException("Out of range!");
         }
 
         Pageable pageable = PageRequest.of(start, end - start);
@@ -68,7 +68,7 @@ public class CommentsController {
                                                       @RequestParam int end,
                                                       @PathVariable long taskId) {
         if ((end - start) < 1) {
-            throw new PaginationOutOfRange("Out of range!");
+            throw new PaginationOutOfRangeException("Out of range!");
         }
 
         Pageable pageable = PageRequest.of(start, end - start);

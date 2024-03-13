@@ -4,9 +4,9 @@ import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
-import com.egor.tasks.exception.ForbiddenChanges;
-import com.egor.tasks.exception.TaskNotFound;
-import com.egor.tasks.exception.UserNotFound;
+import com.egor.tasks.exception.ForbiddenChangesException;
+import com.egor.tasks.exception.TaskNotFoundException;
+import com.egor.tasks.exception.UserNotFoundException;
 import com.egor.tasks.repo.TaskRepository;
 import com.egor.tasks.repo.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class TaskServiceImplTest {
     private TaskServiceImpl taskService;
 
     @Test
-    void editStatusAsAuthor() throws UserNotFound, ForbiddenChanges, TaskNotFound {
+    void editStatusAsAuthor() throws UserNotFoundException, ForbiddenChangesException, TaskNotFoundException {
 
         var user1 = new User();
         user1.setId(0L);
@@ -57,7 +57,7 @@ class TaskServiceImplTest {
     }
 
     @Test
-    void editStatusAsAssigned() throws UserNotFound, ForbiddenChanges, TaskNotFound {
+    void editStatusAsAssigned() throws UserNotFoundException, ForbiddenChangesException, TaskNotFoundException {
 
         var user1 = new User();
         user1.setId(0L);
@@ -109,7 +109,7 @@ class TaskServiceImplTest {
         when(userRepository.findByEmail("3@1.ru")).thenReturn(Optional.of(user3));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
 
-        assertThrows(ForbiddenChanges.class,
+        assertThrows(ForbiddenChangesException.class,
                 () -> taskService.editStatus(0L, TaskStatus.FINISHED, "3@1.ru"));
     }
 }

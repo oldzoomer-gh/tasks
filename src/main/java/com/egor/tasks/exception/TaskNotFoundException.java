@@ -4,24 +4,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Task not found.")
-public class TaskNotFound extends RuntimeException {
-    public TaskNotFound() {
+public class TaskNotFoundException extends RuntimeException {
+    public TaskNotFoundException() {
         super();
     }
 
-    public TaskNotFound(String message) {
+    public TaskNotFoundException(String message) {
         super(message);
     }
 
-    public TaskNotFound(String message, Throwable cause) {
+    public TaskNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public TaskNotFound(Throwable cause) {
+    public TaskNotFoundException(Throwable cause) {
         super(cause);
     }
 
-    protected TaskNotFound(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected TaskNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

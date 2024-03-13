@@ -2,9 +2,9 @@ package com.egor.tasks.service.impl;
 
 import com.egor.tasks.dto.UserDto;
 import com.egor.tasks.entity.User;
-import com.egor.tasks.exception.DuplicateUser;
-import com.egor.tasks.exception.IncorrectPassword;
-import com.egor.tasks.exception.UserNotFound;
+import com.egor.tasks.exception.DuplicateUserException;
+import com.egor.tasks.exception.IncorrectPasswordException;
+import com.egor.tasks.exception.UserNotFoundException;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.security.JwtUtilities;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    void loginWithExistUser() throws UserNotFound, IncorrectPassword {
+    void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
 
         var loginDTO = new UserDto();
         loginDTO.setEmail("1@1.ru");
@@ -64,7 +64,7 @@ class UserServiceImplTest {
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
-        assertThrows(IncorrectPassword.class, () -> userService.login(loginDTO));
+        assertThrows(IncorrectPasswordException.class, () -> userService.login(loginDTO));
     }
 
     @Test
@@ -73,7 +73,7 @@ class UserServiceImplTest {
         var loginDTO = new UserDto();
         loginDTO.setEmail("test1");
 
-        assertThrows(UserNotFound.class, () -> userService.login(loginDTO));
+        assertThrows(UserNotFoundException.class, () -> userService.login(loginDTO));
     }
 
     @Test
@@ -84,6 +84,6 @@ class UserServiceImplTest {
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(DuplicateUser.class, () -> userService.reg(userData));
+        assertThrows(DuplicateUserException.class, () -> userService.reg(userData));
     }
 }
