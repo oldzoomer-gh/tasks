@@ -2,9 +2,7 @@ package com.egor.tasks.service;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
-import com.egor.tasks.dto.input.CreateTaskDto;
-import com.egor.tasks.dto.output.OutputTaskDto;
+import com.egor.tasks.dto.TaskDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,7 +17,7 @@ public interface TaskService {
      * @param email Email of the user who creates the task
      * @param assignedEmail Email of the user assigned to the task
      */
-    void create(CreateTaskDto task, String email, String assignedEmail);
+    void create(TaskDto task, String email, String assignedEmail);
 
     /**
      * Deletes a task.
@@ -50,7 +48,7 @@ public interface TaskService {
      * @param taskNameAndDescription New text of the task
      * @param email Email of the user who updates the task
      */
-    void editNameAndDescription(Long id, ChangeTaskTextDataDto taskNameAndDescription, String email);
+    void editNameAndDescription(Long id, TaskDto taskNameAndDescription, String email);
 
     /**
      * Edit assigned user.
@@ -65,7 +63,7 @@ public interface TaskService {
      * @param id ID of the task to get.
      * @return A task.
      */
-    OutputTaskDto getTask(Long id);
+    TaskDto getTask(Long id);
 
     /**
      * Getting all tasks for a user why created.
@@ -73,5 +71,5 @@ public interface TaskService {
      * @param pageable Paging information. Page number and page size.
      * @return A list of tasks.
      */
-    Page<OutputTaskDto> getMultipleTasksForUser(String email, Pageable pageable);
+    Page<TaskDto> getMultipleTasksForUser(String email, Pageable pageable);
 }

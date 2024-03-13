@@ -1,7 +1,7 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.dto.input.LoginAndRegistrationDto;
-import com.egor.tasks.dto.output.TokenDto;
+import com.egor.tasks.dto.TokenDto;
+import com.egor.tasks.dto.UserDto;
 import com.egor.tasks.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +28,7 @@ public class UserController {
                                 description = "User not found, or incorrect password")
                 })
     public TokenDto login(@Parameter(description = "Login data", required = true)
-                            @RequestBody @Valid LoginAndRegistrationDto loginDTO) {
+                            @RequestBody @Valid UserDto loginDTO) {
         return userService.login(loginDTO);
     }
 
@@ -41,7 +41,7 @@ public class UserController {
                                 description = "Duplicate registration data")
                 })
     public void reg(@Parameter(description = "Registration data", required = true)
-                        @RequestBody @Valid LoginAndRegistrationDto userDTO) {
+                        @RequestBody @Valid UserDto userDTO) {
         userService.reg(userDTO);
     }
 

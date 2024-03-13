@@ -1,4 +1,4 @@
-package com.egor.tasks.dto.input;
+package com.egor.tasks.dto;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateTaskDto {
+public class TaskDto {
     @Size(max = 100, message = "Name should be less than 100 symbols")
     @NotEmpty(message = "Name should not be empty")
     private String name;
@@ -24,4 +24,8 @@ public class CreateTaskDto {
 
     @NotNull(message = "Priority should not be null")
     private TaskPriority priority;
+
+    private UserDto author;
+
+    private UserDto assigned;
 }

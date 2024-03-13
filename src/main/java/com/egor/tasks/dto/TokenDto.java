@@ -1,4 +1,4 @@
-package com.egor.tasks.dto.output;
+package com.egor.tasks.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,9 +2,7 @@ package com.egor.tasks.controller;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
-import com.egor.tasks.dto.input.CreateTaskDto;
-import com.egor.tasks.dto.output.OutputTaskDto;
+import com.egor.tasks.dto.TaskDto;
 import com.egor.tasks.exception.PaginationOutOfRange;
 import com.egor.tasks.service.TaskService;
 import jakarta.validation.Valid;
@@ -24,7 +22,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/create")
-    public void createTask(@RequestBody @Valid CreateTaskDto taskDto,
+    public void createTask(@RequestBody @Valid TaskDto taskDto,
                            @RequestParam String assignedEmail,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -60,7 +58,7 @@ public class TaskController {
 
     @PutMapping("/{id}/editNameAndDescription")
     public void editNameAndDescription(@PathVariable Long id,
-                                       @RequestBody @Valid ChangeTaskTextDataDto textDataDto,
+                                       @RequestBody @Valid TaskDto textDataDto,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
 
@@ -77,12 +75,12 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/getTask")
-    public OutputTaskDto getTask(@PathVariable Long id) {
+    public TaskDto getTask(@PathVariable Long id) {
         return taskService.getTask(id);
     }
 
     @GetMapping("/getAllTasksForUser")
-    public Page<OutputTaskDto> getAllTasksForUser(@RequestParam int start,
+    public Page<TaskDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
         if ((end - start) < 1) {
