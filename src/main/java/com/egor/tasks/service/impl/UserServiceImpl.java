@@ -3,9 +3,9 @@ package com.egor.tasks.service.impl;
 import com.egor.tasks.dto.TokenDto;
 import com.egor.tasks.dto.UserDto;
 import com.egor.tasks.entity.User;
-import com.egor.tasks.exception.DuplicateUser;
-import com.egor.tasks.exception.IncorrectPassword;
-import com.egor.tasks.exception.UserNotFound;
+import com.egor.tasks.exception.DuplicateUserException;
+import com.egor.tasks.exception.IncorrectPasswordException;
+import com.egor.tasks.exception.UserNotFoundException;
 import com.egor.tasks.mapper.UserMapper;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.security.JwtUtilities;
@@ -27,10 +27,10 @@ public class UserServiceImpl implements UserService {
         String email = loginData.getEmail();
         String password = loginData.getPassword();
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFound("User not found."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found."));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IncorrectPassword("Incorrect password!");
+            throw new IncorrectPasswordException("Incorrect password!");
         }
 
         TokenDto tokenDto = new TokenDto();
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
                 userRepository.existsByEmail(userData.getEmail());
 
         if (emailIsExist) {
-            throw new DuplicateUser("Duplicate E-Mail.");
+            throw new DuplicateUserException("Duplicate E-Mail.");
         }
 
         User user = registrationDataInputMapper.map(userData);

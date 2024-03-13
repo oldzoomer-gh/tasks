@@ -3,7 +3,7 @@ package com.egor.tasks.controller;
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
 import com.egor.tasks.dto.TaskDto;
-import com.egor.tasks.exception.PaginationOutOfRange;
+import com.egor.tasks.exception.PaginationOutOfRangeException;
 import com.egor.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -84,7 +84,7 @@ public class TaskController {
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
         if ((end - start) < 1) {
-            throw new PaginationOutOfRange("Out of range!");
+            throw new PaginationOutOfRangeException("Out of range!");
         }
 
         Pageable pageable = PageRequest.of(start, end - start);
