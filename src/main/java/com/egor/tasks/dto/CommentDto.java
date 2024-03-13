@@ -1,5 +1,6 @@
 package com.egor.tasks.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -12,5 +13,6 @@ public class CommentDto {
     @NotEmpty(message = "Comment can't be empty")
     private String text;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UserDto author;
 }

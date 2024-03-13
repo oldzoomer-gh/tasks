@@ -58,11 +58,11 @@ public class TaskController {
 
     @PutMapping("/{id}/editNameAndDescription")
     public void editNameAndDescription(@PathVariable Long id,
-                                       @RequestBody @Valid TaskDto textDataDto,
+                                       @RequestBody @Valid TaskDto taskDto,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editNameAndDescription(id, textDataDto, authorEmail);
+        taskService.editNameAndDescription(id, taskDto, authorEmail);
     }
 
     @PutMapping("/{id}/editAssignedUser")
