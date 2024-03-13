@@ -1,8 +1,6 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
-import com.egor.tasks.dto.input.CreateCommentsDto;
-import com.egor.tasks.dto.output.OutputCommentsDto;
+import com.egor.tasks.dto.CommentDto;
 import com.egor.tasks.entity.Comments;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
@@ -10,8 +8,7 @@ import com.egor.tasks.exception.CommentNotFound;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
-import com.egor.tasks.mapper.input.CommentsInputMapper;
-import com.egor.tasks.mapper.output.CommentsOutputMapper;
+import com.egor.tasks.mapper.CommentMapper;
 import com.egor.tasks.repo.CommentsRepository;
 import com.egor.tasks.repo.TaskRepository;
 import com.egor.tasks.repo.UserRepository;
@@ -28,18 +25,17 @@ public class CommentsServiceImpl implements CommentsService {
     private final UserRepository userRepository;
     private final CommentsRepository commentsRepository;
     private final TaskRepository taskRepository;
-    private final CommentsInputMapper commentsInputMapper;
-    private final CommentsOutputMapper commentsOutputMapper;
+    private final CommentMapper commentMapper;
 
     @Override
-    public void create(CreateCommentsDto comment, Long taskId, String email) {
+    public void create(CommentDto comment, Long taskId, String email) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("Author not found."));
 
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFound("Task not found!"));
 
-        Comments comment1 = commentsInputMapper.map(comment);
+        Comments comment1 = commentMapper.map(comment);
 
         comment1.setAuthor(author);
         comment1.setTask(task);
@@ -48,7 +44,7 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public void edit(Long id, ChangeCommentsTextDataDto changes,
+    public void edit(Long id, CommentDto changes,
                      String email) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
@@ -80,32 +76,32 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public OutputCommentsDto getComment(Long id) {
+    public CommentDto getComment(Long id) {
         Comments comment = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFound("Comment not found."));
 
-        return commentsOutputMapper.map(comment);
+        return commentMapper.map(comment);
     }
 
     @Override
-    public Page<OutputCommentsDto> getMultipleCommentsForUser(String email,
+    public Page<CommentDto> getMultipleCommentsForUser(String email,
                                                               Pageable pageable) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
         Page<Comments> comments = commentsRepository.findAllByAuthor(author, pageable);
 
-        return comments.map(commentsOutputMapper::map);
+        return comments.map(commentMapper::map);
     }
 
     @Override
-    public Page<OutputCommentsDto> getMultipleCommentsForTask(Long taskId,
+    public Page<CommentDto> getMultipleCommentsForTask(Long taskId,
                                                               Pageable pageable) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
         Page<Comments> comments = commentsRepository.findAllByTask(task, pageable);
 
-        return comments.map(commentsOutputMapper::map);
+        return comments.map(commentMapper::map);
     }
 }

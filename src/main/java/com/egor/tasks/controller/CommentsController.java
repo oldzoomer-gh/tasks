@@ -1,8 +1,6 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
-import com.egor.tasks.dto.input.CreateCommentsDto;
-import com.egor.tasks.dto.output.OutputCommentsDto;
+import com.egor.tasks.dto.CommentDto;
 import com.egor.tasks.exception.PaginationOutOfRange;
 import com.egor.tasks.service.CommentsService;
 import jakarta.validation.Valid;
@@ -22,7 +20,7 @@ public class CommentsController {
     private final CommentsService commentsService;
 
     @PostMapping("/{taskId}/create")
-    public void createComment(@RequestBody @Valid CreateCommentsDto comment,
+    public void createComment(@RequestBody @Valid CommentDto comment,
                               @PathVariable Long taskId,
                               Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -31,7 +29,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{id}/edit")
-    public void editComment(@RequestBody @Valid ChangeCommentsTextDataDto changes,
+    public void editComment(@RequestBody @Valid CommentDto changes,
                             @PathVariable Long id,
                             Authentication authentication) {
         String authorEmail = authentication.getName();
@@ -48,12 +46,12 @@ public class CommentsController {
     }
 
     @GetMapping("/{id}/getComment")
-    public OutputCommentsDto getComment(@PathVariable Long id) {
+    public CommentDto getComment(@PathVariable Long id) {
         return commentsService.getComment(id);
     }
 
     @GetMapping("/getAllCommentsForUser")
-    public Page<OutputCommentsDto> getAllTasksForUser(@RequestParam int start,
+    public Page<CommentDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
         if ((end - start) < 1) {
@@ -66,7 +64,7 @@ public class CommentsController {
     }
 
     @GetMapping("/{taskId}/getAllCommentsForTask")
-    public Page<OutputCommentsDto> getAllTasksForTask(@RequestParam int start,
+    public Page<CommentDto> getAllTasksForTask(@RequestParam int start,
                                                       @RequestParam int end,
                                                       @PathVariable long taskId) {
         if ((end - start) < 1) {

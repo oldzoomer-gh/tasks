@@ -1,12 +1,12 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.dto.input.LoginAndRegistrationDto;
-import com.egor.tasks.dto.output.TokenDto;
+import com.egor.tasks.dto.TokenDto;
+import com.egor.tasks.dto.UserDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUser;
 import com.egor.tasks.exception.IncorrectPassword;
 import com.egor.tasks.exception.UserNotFound;
-import com.egor.tasks.mapper.input.RegistrationDataInputMapper;
+import com.egor.tasks.mapper.UserMapper;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.security.JwtUtilities;
 import com.egor.tasks.service.UserService;
@@ -19,11 +19,11 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final JwtUtilities jwtUtilities;
     private final UserRepository userRepository;
-    private final RegistrationDataInputMapper registrationDataInputMapper;
+    private final UserMapper registrationDataInputMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public TokenDto login(LoginAndRegistrationDto loginData) {
+    public TokenDto login(UserDto loginData) {
         String email = loginData.getEmail();
         String password = loginData.getPassword();
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void reg(LoginAndRegistrationDto userData) {
+    public void reg(UserDto userData) {
         boolean emailIsExist =
                 userRepository.existsByEmail(userData.getEmail());
 

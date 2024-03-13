@@ -1,8 +1,6 @@
 package com.egor.tasks.service;
 
-import com.egor.tasks.dto.change.ChangeCommentsTextDataDto;
-import com.egor.tasks.dto.input.CreateCommentsDto;
-import com.egor.tasks.dto.output.OutputCommentsDto;
+import com.egor.tasks.dto.CommentDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +15,7 @@ public interface CommentsService {
      * @param taskId ID of task.
      * @param email Email of author.
      */
-    void create(CreateCommentsDto comment, Long taskId, String email);
+    void create(CommentDto comment, Long taskId, String email);
 
     /**
      * Change text of comment
@@ -25,7 +23,7 @@ public interface CommentsService {
      * @param changes Changes to apply.
      * @param email Email of author.
      */
-    void edit(Long id, ChangeCommentsTextDataDto changes, String email);
+    void edit(Long id, CommentDto changes, String email);
 
     /**
      * Delete comment
@@ -39,7 +37,7 @@ public interface CommentsService {
      * @param id ID of comment.
      * @return Comment.
      */
-    OutputCommentsDto getComment(Long id);
+    CommentDto getComment(Long id);
 
     /**
      * Get all comments for user
@@ -47,7 +45,7 @@ public interface CommentsService {
      * @param pageable Pageable object.
      * @return Page of comments.
      */
-    Page<OutputCommentsDto> getMultipleCommentsForUser(String email, Pageable pageable);
+    Page<CommentDto> getMultipleCommentsForUser(String email, Pageable pageable);
 
     /**
      * Get all comments for task
@@ -55,5 +53,5 @@ public interface CommentsService {
      * @param pageable Pageable object.
      * @return Page of comments.
      */
-    Page<OutputCommentsDto> getMultipleCommentsForTask(Long taskId, Pageable pageable);
+    Page<CommentDto> getMultipleCommentsForTask(Long taskId, Pageable pageable);
 }

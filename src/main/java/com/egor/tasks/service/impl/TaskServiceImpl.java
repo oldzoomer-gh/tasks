@@ -2,16 +2,13 @@ package com.egor.tasks.service.impl;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.dto.change.ChangeTaskTextDataDto;
-import com.egor.tasks.dto.input.CreateTaskDto;
-import com.egor.tasks.dto.output.OutputTaskDto;
+import com.egor.tasks.dto.TaskDto;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.ForbiddenChanges;
 import com.egor.tasks.exception.TaskNotFound;
 import com.egor.tasks.exception.UserNotFound;
-import com.egor.tasks.mapper.input.TaskInputMapper;
-import com.egor.tasks.mapper.output.TaskOutputMapper;
+import com.egor.tasks.mapper.TaskMapper;
 import com.egor.tasks.repo.TaskRepository;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.service.TaskService;
@@ -26,17 +23,16 @@ public class TaskServiceImpl implements TaskService {
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-    private final TaskInputMapper taskInputMapper;
-    private final TaskOutputMapper taskOutputMapper;
+    private final TaskMapper taskMapper;
 
     @Override
-    public void create(CreateTaskDto task, String email, String assignedEmail) {
+    public void create(TaskDto task, String email, String assignedEmail) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("Author not found."));
         User assignedUser = userRepository.findByEmail(assignedEmail)
                 .orElseThrow(() -> new UserNotFound("Assigned user not found."));
 
-        Task task1 = taskInputMapper.map(task);
+        Task task1 = taskMapper.map(task);
 
         task1.setAuthor(author);
         task1.setAssigned(assignedUser);
@@ -94,7 +90,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void editNameAndDescription(
-            Long id, ChangeTaskTextDataDto taskNameAndDescription, String email) {
+            Long id, TaskDto taskNameAndDescription, String email) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
@@ -130,20 +126,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public OutputTaskDto getTask(Long id) {
+    public TaskDto getTask(Long id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFound("Task not found."));
 
-        return taskOutputMapper.map(task);
+        return taskMapper.map(task);
     }
 
     @Override
-    public Page<OutputTaskDto> getMultipleTasksForUser(String email, Pageable pageable) {
+    public Page<TaskDto> getMultipleTasksForUser(String email, Pageable pageable) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
         Page<Task> tasks = taskRepository.findAllByAuthor(author, pageable);
 
-        return tasks.map(taskOutputMapper::map);
+        return tasks.map(taskMapper::map);
     }
 }

@@ -1,4 +1,4 @@
-package com.egor.tasks.dto.input;
+package com.egor.tasks.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -7,8 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateCommentsDto {
+public class CommentDto {
     @Size(max = 300, message = "Comment must be less than 300 characters")
     @NotEmpty(message = "Comment can't be empty")
     private String text;
+
+    private UserDto author;
 }

@@ -1,6 +1,6 @@
-package com.egor.tasks.mapper.input;
+package com.egor.tasks.mapper;
 
-import com.egor.tasks.dto.input.LoginAndRegistrationDto;
+import com.egor.tasks.dto.UserDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.mapper.util.EncodedMapping;
 import com.egor.tasks.mapper.util.PasswordEncoderMapper;
@@ -11,7 +11,8 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         uses = PasswordEncoderMapper.class,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface RegistrationDataInputMapper {
+public interface UserMapper {
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    User map(LoginAndRegistrationDto dto);
+    User map(UserDto dto);
+    UserDto map(User user);
 }
