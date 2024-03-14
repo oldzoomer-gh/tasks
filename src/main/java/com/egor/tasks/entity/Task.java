@@ -54,14 +54,11 @@ public class Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task task)) return false;
-        return Objects.equals(id, task.id) &&
-                Objects.equals(name, task.name) &&
-                Objects.equals(author, task.author) &&
-                Objects.equals(assigned, task.assigned);
+        return Objects.equals(id, task.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, author, assigned);
+        return Objects.hash(id);
     }
 }
