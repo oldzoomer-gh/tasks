@@ -37,13 +37,11 @@ public class Comments {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Comments comments)) return false;
-        return Objects.equals(id, comments.id) &&
-                Objects.equals(author, comments.author) &&
-                Objects.equals(task, comments.task);
+        return Objects.equals(id, comments.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, author, task);
+        return Objects.hash(id);
     }
 }
