@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "comments")
 @Getter
@@ -30,4 +32,18 @@ public class Comments {
 
     @Column(name = "text", length = 300, nullable = false)
     private String text;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comments comments)) return false;
+        return Objects.equals(id, comments.id) &&
+                Objects.equals(author, comments.author) &&
+                Objects.equals(task, comments.task);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author, task);
+    }
 }
