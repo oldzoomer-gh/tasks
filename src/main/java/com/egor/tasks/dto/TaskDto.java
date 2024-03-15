@@ -13,11 +13,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TaskDto {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long id;
+
     @Size(max = 100, message = "Name should be less than 100 symbols")
     @NotEmpty(message = "Name should not be empty")
     private String name;
 
-    @Size(max = 300, message = "Description should be less than 300 symbols")
+    @Size(max = 300, message = "The description should be less than 300 symbols")
     @NotEmpty(message = "Description should not be empty")
     private String description;
 

@@ -9,6 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommentDto {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long id;
+
     @Size(max = 300, message = "Comment must be less than 300 characters")
     @NotEmpty(message = "Comment can't be empty")
     private String text;

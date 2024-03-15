@@ -10,12 +10,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long id;
+
     @Size(max = 50, message = "Email must be less than 50 characters")
     @NotEmpty(message = "Email can't be empty")
     @Email(message = "Invalid email")
     private String email;
 
-    @Size(max = 32, min = 8, message = "Password must be between 8 and 32 characters")
+    @Size(max = 32, min = 8, message = "The password must be between 8 and 32 characters")
     @NotEmpty(message = "Password can't be empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
