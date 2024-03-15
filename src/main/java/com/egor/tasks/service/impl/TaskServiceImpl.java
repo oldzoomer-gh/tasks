@@ -51,7 +51,8 @@ public class TaskServiceImpl implements TaskService {
         if (!task.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChangesException("Changes of data must do only his author!");
         } else {
-            taskRepository.deleteById(id);
+            author.getAuthorTasks().remove(task);
+            userRepository.save(author);
         }
     }
 
