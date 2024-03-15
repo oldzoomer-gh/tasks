@@ -71,8 +71,9 @@ public class CommentsServiceImpl implements CommentsService {
         if (!comments.getAuthor().getEmail().equals(author.getEmail())) {
             throw new ForbiddenChangesException("Changes of data must do only his author!");
         } else {
-            comments.getTask().getComments().remove(comments);
-            taskRepository.save(comments.getTask());
+            Task task = comments.getTask();
+            task.getComments().remove(comments);
+            taskRepository.save(task);
             author.getComments().remove(comments);
             userRepository.save(author);
         }

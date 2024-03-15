@@ -78,7 +78,7 @@ public class JwtUtilities {
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
+            log.info("JWT token compact of handler is invalid.");
         }
         return false;
     }

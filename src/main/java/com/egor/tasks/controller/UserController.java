@@ -25,7 +25,7 @@ public class UserController {
                         @ApiResponse(description = "JWT token for user",
                                 useReturnTypeSchema = true),
                         @ApiResponse(responseCode = "403",
-                                description = "User not found, or incorrect password")
+                                description = "User is not found or incorrect password")
                 })
     public TokenDto login(@Parameter(description = "Login data", required = true)
                             @RequestBody @Valid UserDto userDto) {
