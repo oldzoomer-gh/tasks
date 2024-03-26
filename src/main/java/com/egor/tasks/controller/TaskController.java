@@ -38,7 +38,7 @@ public class TaskController {
         taskService.delete(id, authorEmail);
     }
 
-    @PutMapping("/{id}/editStatus")
+    @PutMapping("/{id}/edit/status")
     public void editStatus(@PathVariable Long id,
                            @RequestParam TaskStatus status,
                            Authentication authentication) {
@@ -47,7 +47,7 @@ public class TaskController {
         taskService.editStatus(id, status, authorEmail);
     }
 
-    @PutMapping("/{id}/editPriority")
+    @PutMapping("/{id}/edit/priority")
     public void editPriority(@PathVariable Long id,
                              @RequestParam TaskPriority priority,
                              Authentication authentication) {
@@ -56,7 +56,7 @@ public class TaskController {
         taskService.editPriority(id, priority, authorEmail);
     }
 
-    @PutMapping("/{id}/editNameAndDescription")
+    @PutMapping("/{id}/edit/description")
     public void editNameAndDescription(@PathVariable Long id,
                                        @RequestBody @Valid TaskDto taskDto,
                                        Authentication authentication) {
@@ -65,7 +65,7 @@ public class TaskController {
         taskService.editNameAndDescription(id, taskDto, authorEmail);
     }
 
-    @PutMapping("/{id}/editAssignedUser")
+    @PutMapping("/{id}/edit/assigned")
     public void editAssignedUser(@PathVariable Long id,
                              @RequestParam String assignedEmail,
                              Authentication authentication) {
@@ -74,12 +74,12 @@ public class TaskController {
         taskService.editAssignedUser(id, assignedEmail, authorEmail);
     }
 
-    @GetMapping("/{id}/getTask")
+    @GetMapping("/get/{id}")
     public TaskDto getTask(@PathVariable Long id) {
         return taskService.getTask(id);
     }
 
-    @GetMapping("/getAllTasksForUser")
+    @GetMapping("/get")
     public Page<TaskDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
