@@ -45,12 +45,12 @@ public class CommentsController {
         commentsService.delete(id, authorEmail);
     }
 
-    @GetMapping("/{id}/getComment")
+    @GetMapping("/get/{id}")
     public CommentDto getComment(@PathVariable Long id) {
         return commentsService.getComment(id);
     }
 
-    @GetMapping("/getAllCommentsForUser")
+    @GetMapping("/get/user")
     public Page<CommentDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
@@ -63,7 +63,7 @@ public class CommentsController {
         return commentsService.getMultipleCommentsForUser(email, pageable);
     }
 
-    @GetMapping("/{taskId}/getAllCommentsForTask")
+    @GetMapping("/get/task/{taskId}")
     public Page<CommentDto> getAllTasksForTask(@RequestParam int start,
                                                       @RequestParam int end,
                                                       @PathVariable long taskId) {
