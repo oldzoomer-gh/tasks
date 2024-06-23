@@ -1,7 +1,7 @@
 package com.egor.tasks.service;
 
-import com.egor.tasks.dto.TokenDto;
-import com.egor.tasks.dto.UserDto;
+import com.egor.tasks.dto.output.users.TokenDto;
+import com.egor.tasks.entity.User;
 
 /**
  * User management service layer.
@@ -10,14 +10,14 @@ import com.egor.tasks.dto.UserDto;
 public interface UserService {
     /**
      * Login user with email and password. Generates JWT Bearer token.
-     * @param userDto Login data.
+     * @param user Login data.
      * @return JWT Bearer token.
      */
-    TokenDto login(UserDto userDto);
+    TokenDto login(User user);
 
     /**
      * Register user.
-     * @param userDto Registration data.
+     * @param user Registration data.
      */
-    void reg(UserDto userDto);
+    void reg(User user);
 }

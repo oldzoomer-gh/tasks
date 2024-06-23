@@ -1,8 +1,7 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.constant.TaskPriority;
-import com.egor.tasks.constant.TaskStatus;
-import com.egor.tasks.dto.TaskDto;
+import com.egor.tasks.dto.input.tasks.*;
+import com.egor.tasks.dto.output.tasks.TaskOutputDto;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
 import com.egor.tasks.mapper.TaskMapper;
@@ -25,13 +24,12 @@ public class TaskController {
     private final TaskMapper taskMapper;
 
     @PostMapping("/create")
-    public void createTask(@RequestBody @Valid TaskDto taskDto,
-                           @RequestParam String assignedEmail,
+    public void createTask(@RequestBody @Valid CreateTaskDto createTaskDto,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
-        Task task1 = taskMapper.map(taskDto);
+        Task task1 = taskMapper.map(createTaskDto);
 
-        taskService.create(task1, authorEmail, assignedEmail);
+        taskService.create(task1, authorEmail, createTaskDto.getAssignedEmail());
     }
 
     @DeleteMapping("/{id}/delete")
@@ -43,50 +41,49 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/edit/status")
-    public void editStatus(@PathVariable Long id,
-                           @RequestParam TaskStatus status,
+    public void editStatus(@RequestBody @Valid EditTaskStatusDto editTaskStatusDto,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editStatus(id, status, authorEmail);
+        taskService.editStatus(editTaskStatusDto.getTaskId(),
+                editTaskStatusDto.getStatus(), authorEmail);
     }
 
     @PutMapping("/{id}/edit/priority")
-    public void editPriority(@PathVariable Long id,
-                             @RequestParam TaskPriority priority,
+    public void editPriority(@RequestBody @Valid EditTaskPriorityDto editTaskPriorityDto,
                              Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editPriority(id, priority, authorEmail);
+        taskService.editPriority(editTaskPriorityDto.getTaskId(),
+                editTaskPriorityDto.getPriority(), authorEmail);
     }
 
     @PutMapping("/{id}/edit/description")
-    public void editNameAndDescription(@PathVariable Long id,
-                                       @RequestBody @Valid TaskDto taskDto,
+    public void editNameAndDescription(@RequestBody @Valid EditTaskDto editTaskDto,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
-        Task task = taskMapper.map(taskDto);
+        Task task = taskMapper.map(editTaskDto);
 
-        taskService.editNameAndDescription(id, task, authorEmail);
+        taskService.editNameAndDescription(editTaskDto.getTaskId(), task, authorEmail);
     }
 
     @PutMapping("/{id}/edit/assigned")
-    public void editAssignedUser(@PathVariable Long id,
-                             @RequestParam String assignedEmail,
-                             Authentication authentication) {
+    public void editAssignedUser(@RequestBody @Valid EditTaskAssignedUserDto editTaskAssignedUserDto,
+                                 Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editAssignedUser(id, assignedEmail, authorEmail);
+        taskService.editAssignedUser(editTaskAssignedUserDto.getTaskId(),
+                editTaskAssignedUserDto.getAssignedEmail(), authorEmail);
     }
 
     @GetMapping("/get/{id}")
-    public TaskDto getTask(@PathVariable Long id) {
+    public TaskOutputDto getTask(@PathVariable Long id) {
         Task task = taskService.getTask(id);
         return taskMapper.map(task);
     }
 
     @GetMapping("/get")
-    public Page<TaskDto> getAllTasksForUser(@RequestParam int start,
+    public Page<TaskOutputDto> getAllTasksForUser(@RequestParam int start,
                                                   @RequestParam int end,
                                                   @RequestParam String email) {
         if ((end - start) < 1) {

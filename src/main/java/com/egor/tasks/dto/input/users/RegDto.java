@@ -1,4 +1,4 @@
-package com.egor.tasks.dto;
+package com.egor.tasks.dto.input.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
@@ -9,10 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDto {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private long id;
-
+public class RegDto {
     @Size(max = 50, message = "Email must be less than 50 characters")
     @NotEmpty(message = "Email can't be empty")
     @Email(message = "Invalid email")
