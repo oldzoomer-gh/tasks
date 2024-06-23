@@ -1,6 +1,5 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.dto.CommentDto;
 import com.egor.tasks.entity.Comments;
 import com.egor.tasks.entity.Task;
 import com.egor.tasks.entity.User;
@@ -28,23 +27,21 @@ public class CommentsServiceImpl implements CommentsService {
     private final CommentMapper commentMapper;
 
     @Override
-    public void create(CommentDto comment, Long taskId, String email) {
+    public void create(Comments comment, Long taskId, String email) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Author not found."));
 
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found!"));
 
-        Comments comment1 = commentMapper.map(comment);
+        comment.setAuthor(author);
+        comment.setTask(task);
 
-        comment1.setAuthor(author);
-        comment1.setTask(task);
-
-        commentsRepository.save(comment1);
+        commentsRepository.save(comment);
     }
 
     @Override
-    public void edit(Long id, CommentDto changes,
+    public void edit(Long id, Comments changes,
                      String email) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
@@ -80,32 +77,26 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public CommentDto getComment(Long id) {
-        Comments comment = commentsRepository.findById(id)
+    public Comments getComment(Long id) {
+        return commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found."));
-
-        return commentMapper.map(comment);
     }
 
     @Override
-    public Page<CommentDto> getMultipleCommentsForUser(String email,
+    public Page<Comments> getMultipleCommentsForUser(String email,
                                                               Pageable pageable) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
-        Page<Comments> comments = commentsRepository.findAllByAuthor(author, pageable);
-
-        return comments.map(commentMapper::map);
+        return commentsRepository.findAllByAuthor(author, pageable);
     }
 
     @Override
-    public Page<CommentDto> getMultipleCommentsForTask(Long taskId,
+    public Page<Comments> getMultipleCommentsForTask(Long taskId,
                                                               Pageable pageable) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found."));
 
-        Page<Comments> comments = commentsRepository.findAllByTask(task, pageable);
-
-        return comments.map(commentMapper::map);
+        return commentsRepository.findAllByTask(task, pageable);
     }
 }
