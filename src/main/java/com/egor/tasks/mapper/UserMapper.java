@@ -2,7 +2,6 @@ package com.egor.tasks.mapper;
 
 import com.egor.tasks.dto.input.users.LoginDto;
 import com.egor.tasks.dto.input.users.RegDto;
-import com.egor.tasks.dto.output.users.UserDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.mapper.util.EncodedMapping;
 import com.egor.tasks.mapper.util.PasswordEncoderMapper;
@@ -19,6 +18,4 @@ public interface UserMapper {
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
     User map(RegDto dto);
-
-    UserDto map(User user);
 }
