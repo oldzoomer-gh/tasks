@@ -1,6 +1,7 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.dto.input.comments.*;
+import com.egor.tasks.dto.input.comments.CreateCommentDto;
+import com.egor.tasks.dto.input.comments.EditCommentDto;
 import com.egor.tasks.dto.output.comments.CommentOutputDto;
 import com.egor.tasks.entity.Comments;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
@@ -41,26 +42,24 @@ public class CommentsController {
         commentsService.edit(changes.getCommentId(), changes1, authorEmail);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteComment(@RequestBody DeleteCommentDto deleteCommentDto,
+    @DeleteMapping("/{id}/delete")
+    public void deleteComment(@PathVariable Long id,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        commentsService.delete(deleteCommentDto.getCommentId(), authorEmail);
+        commentsService.delete(id, authorEmail);
     }
 
-    @GetMapping("/get")
-    public CommentOutputDto getComment(@RequestBody GetCommentDto getCommentDto) {
-        Comments comment = commentsService.getComment(getCommentDto.getCommentId());
+    @GetMapping("/get/{id}")
+    public CommentOutputDto getComment(@PathVariable Long id) {
+        Comments comment = commentsService.getComment(id);
         return commentMapper.map(comment);
     }
 
     @GetMapping("/get/user")
-    public Page<CommentOutputDto> getAllCommentsForUser(@RequestBody GetAllCommentsForUserDto getAllCommentsForUserDto) {
-        Integer start = getAllCommentsForUserDto.getStart();
-        Integer end = getAllCommentsForUserDto.getEnd();
-        String email = getAllCommentsForUserDto.getEmail();
-
+    public Page<CommentOutputDto> getAllCommentsForUser(@RequestParam int start,
+                                                        @RequestParam int end,
+                                                        @RequestParam String email) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRangeException("Out of range!");
         }
@@ -72,11 +71,9 @@ public class CommentsController {
     }
 
     @GetMapping("/get/task")
-    public Page<CommentOutputDto> getAllCommentsForTask(@RequestBody GetAllCommentsForTaskDto getAllCommentsForTaskDto) {
-        Integer start = getAllCommentsForTaskDto.getStart();
-        Integer end = getAllCommentsForTaskDto.getEnd();
-        Long taskId = getAllCommentsForTaskDto.getTaskId();
-
+    public Page<CommentOutputDto> getAllCommentsForTask(@RequestParam int start,
+                                                        @RequestParam int end,
+                                                        @PathVariable long taskId) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRangeException("Out of range!");
         }
