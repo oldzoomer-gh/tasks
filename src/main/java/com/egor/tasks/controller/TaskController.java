@@ -3,7 +3,9 @@ package com.egor.tasks.controller;
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
 import com.egor.tasks.dto.TaskDto;
+import com.egor.tasks.entity.Task;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
+import com.egor.tasks.mapper.TaskMapper;
 import com.egor.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,14 +22,16 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class TaskController {
     private final TaskService taskService;
+    private final TaskMapper taskMapper;
 
     @PostMapping("/create")
     public void createTask(@RequestBody @Valid TaskDto taskDto,
                            @RequestParam String assignedEmail,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
+        Task task1 = taskMapper.map(taskDto);
 
-        taskService.create(taskDto, authorEmail, assignedEmail);
+        taskService.create(task1, authorEmail, assignedEmail);
     }
 
     @DeleteMapping("/{id}/delete")
@@ -61,8 +65,9 @@ public class TaskController {
                                        @RequestBody @Valid TaskDto taskDto,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
+        Task task = taskMapper.map(taskDto);
 
-        taskService.editNameAndDescription(id, taskDto, authorEmail);
+        taskService.editNameAndDescription(id, task, authorEmail);
     }
 
     @PutMapping("/{id}/edit/assigned")
@@ -76,7 +81,8 @@ public class TaskController {
 
     @GetMapping("/get/{id}")
     public TaskDto getTask(@PathVariable Long id) {
-        return taskService.getTask(id);
+        Task task = taskService.getTask(id);
+        return taskMapper.map(task);
     }
 
     @GetMapping("/get")
@@ -88,7 +94,8 @@ public class TaskController {
         }
 
         Pageable pageable = PageRequest.of(start, end - start);
+        Page<Task> multipleTasksForUser = taskService.getMultipleTasksForUser(email, pageable);
 
-        return taskService.getMultipleTasksForUser(email, pageable);
+        return multipleTasksForUser.map(taskMapper::map);
     }
 }
