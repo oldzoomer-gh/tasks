@@ -14,5 +14,6 @@ import org.mapstruct.ReportingPolicy;
 public interface UserMapper {
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
     User map(UserDto dto);
+
     UserDto map(User user);
 }

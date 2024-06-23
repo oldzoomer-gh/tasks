@@ -1,18 +1,22 @@
 package com.egor.tasks.mapper;
 
-import com.egor.tasks.dto.CommentDto;
 import com.egor.tasks.dto.UserDto;
+import com.egor.tasks.dto.input.comments.CreateCommentDto;
+import com.egor.tasks.dto.input.comments.EditCommentDto;
+import com.egor.tasks.dto.output.comments.CommentOutputDto;
 import com.egor.tasks.entity.Comments;
 import com.egor.tasks.entity.User;
-import com.egor.tasks.mapper.util.PasswordEncoderMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
-        uses = PasswordEncoderMapper.class,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommentMapper {
-    Comments map(CommentDto dto);
-	CommentDto map(Comments comment);
+    Comments map(CreateCommentDto dto);
+
+    Comments map(EditCommentDto dto);
+
+	CommentOutputDto map(Comments comment);
+
     UserDto map(User user);
 }

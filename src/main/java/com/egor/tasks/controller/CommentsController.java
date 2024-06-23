@@ -1,6 +1,7 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.dto.CommentDto;
+import com.egor.tasks.dto.input.comments.*;
+import com.egor.tasks.dto.output.comments.CommentOutputDto;
 import com.egor.tasks.entity.Comments;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
 import com.egor.tasks.mapper.CommentMapper;
@@ -22,44 +23,44 @@ public class CommentsController {
     private final CommentsService commentsService;
     private final CommentMapper commentMapper;
 
-    @PostMapping("/{taskId}/create")
-    public void createComment(@RequestBody @Valid CommentDto comment,
-                              @PathVariable Long taskId,
+    @PostMapping("/create")
+    public void createComment(@RequestBody @Valid CreateCommentDto comment,
                               Authentication authentication) {
         String authorEmail = authentication.getName();
         Comments comment1 = commentMapper.map(comment);
 
-        commentsService.create(comment1, taskId, authorEmail);
+        commentsService.create(comment1, comment.getTaskId(), authorEmail);
     }
 
-    @PutMapping("/{id}/edit")
-    public void editComment(@RequestBody @Valid CommentDto changes,
-                            @PathVariable Long id,
+    @PutMapping("/edit")
+    public void editComment(@RequestBody @Valid EditCommentDto changes,
                             Authentication authentication) {
         String authorEmail = authentication.getName();
         Comments changes1 = commentMapper.map(changes);
 
-        commentsService.edit(id, changes1, authorEmail);
+        commentsService.edit(changes.getCommentId(), changes1, authorEmail);
     }
 
-    @DeleteMapping("/{id}/delete")
-    public void deleteComment(@PathVariable Long id,
+    @DeleteMapping("/delete")
+    public void deleteComment(@RequestBody DeleteCommentDto deleteCommentDto,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        commentsService.delete(id, authorEmail);
+        commentsService.delete(deleteCommentDto.getCommentId(), authorEmail);
     }
 
-    @GetMapping("/get/{id}")
-    public CommentDto getComment(@PathVariable Long id) {
-        Comments comment = commentsService.getComment(id);
+    @GetMapping("/get")
+    public CommentOutputDto getComment(@RequestBody GetCommentDto getCommentDto) {
+        Comments comment = commentsService.getComment(getCommentDto.getCommentId());
         return commentMapper.map(comment);
     }
 
     @GetMapping("/get/user")
-    public Page<CommentDto> getAllTasksForUser(@RequestParam int start,
-                                                  @RequestParam int end,
-                                                  @RequestParam String email) {
+    public Page<CommentOutputDto> getAllCommentsForUser(@RequestBody GetAllCommentsForUserDto getAllCommentsForUserDto) {
+        Integer start = getAllCommentsForUserDto.getStart();
+        Integer end = getAllCommentsForUserDto.getEnd();
+        String email = getAllCommentsForUserDto.getEmail();
+
         if ((end - start) < 1) {
             throw new PaginationOutOfRangeException("Out of range!");
         }
@@ -70,10 +71,12 @@ public class CommentsController {
         return multipleCommentsForUser.map(commentMapper::map);
     }
 
-    @GetMapping("/get/task/{taskId}")
-    public Page<CommentDto> getAllTasksForTask(@RequestParam int start,
-                                                      @RequestParam int end,
-                                                      @PathVariable long taskId) {
+    @GetMapping("/get/task")
+    public Page<CommentOutputDto> getAllCommentsForTask(@RequestBody GetAllCommentsForTaskDto getAllCommentsForTaskDto) {
+        Integer start = getAllCommentsForTaskDto.getStart();
+        Integer end = getAllCommentsForTaskDto.getEnd();
+        Long taskId = getAllCommentsForTaskDto.getTaskId();
+
         if ((end - start) < 1) {
             throw new PaginationOutOfRangeException("Out of range!");
         }
