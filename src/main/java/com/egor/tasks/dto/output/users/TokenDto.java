@@ -1,4 +1,4 @@
-package com.egor.tasks.dto;
+package com.egor.tasks.dto.output.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

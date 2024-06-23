@@ -1,12 +1,10 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.dto.TokenDto;
-import com.egor.tasks.dto.UserDto;
+import com.egor.tasks.dto.output.users.TokenDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUserException;
 import com.egor.tasks.exception.IncorrectPasswordException;
 import com.egor.tasks.exception.UserNotFoundException;
-import com.egor.tasks.mapper.UserMapper;
 import com.egor.tasks.repo.UserRepository;
 import com.egor.tasks.security.JwtUtilities;
 import com.egor.tasks.service.UserService;
@@ -19,35 +17,33 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final JwtUtilities jwtUtilities;
     private final UserRepository userRepository;
-    private final UserMapper registrationDataInputMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public TokenDto login(UserDto userDto) {
-        String email = userDto.getEmail();
-        String password = userDto.getPassword();
+    public TokenDto login(User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found."));
+        User user1 = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found."));
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user1.getPassword())) {
             throw new IncorrectPasswordException("Incorrect password!");
         }
 
         TokenDto tokenDto = new TokenDto();
-        tokenDto.setToken(jwtUtilities.generateToken(user.getUsername(), "ROLE_USER"));
+        tokenDto.setToken(jwtUtilities.generateToken(user1.getUsername(), "ROLE_USER"));
         return tokenDto;
     }
 
     @Override
-    public void reg(UserDto userDto) {
+    public void reg(User user) {
         boolean emailIsExist =
-                userRepository.existsByEmail(userDto.getEmail());
+                userRepository.existsByEmail(user.getEmail());
 
         if (emailIsExist) {
             throw new DuplicateUserException("Duplicate E-Mail.");
         }
 
-        User user = registrationDataInputMapper.map(userDto);
         userRepository.save(user);
     }
 }

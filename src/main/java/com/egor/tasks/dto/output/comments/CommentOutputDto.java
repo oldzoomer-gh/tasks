@@ -1,6 +1,6 @@
 package com.egor.tasks.dto.output.comments;
 
-import com.egor.tasks.dto.UserDto;
+import com.egor.tasks.dto.output.users.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 

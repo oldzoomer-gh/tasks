@@ -1,8 +1,7 @@
-package com.egor.tasks.dto;
+package com.egor.tasks.dto.input.tasks;
 
 import com.egor.tasks.constant.TaskPriority;
 import com.egor.tasks.constant.TaskStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,10 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TaskDto {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private long id;
-
+public class CreateTaskDto {
     @Size(max = 100, message = "Name should be less than 100 symbols")
     @NotEmpty(message = "Name should not be empty")
     private String name;
@@ -30,15 +26,8 @@ public class TaskDto {
     @NotNull(message = "Priority should not be null")
     private TaskPriority priority;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Email(message = "Invalid email")
     @Size(max = 50, message = "Email must be less than 50 characters")
     @NotEmpty(message = "Email can't be empty")
     private String assignedEmail;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private UserDto author;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private UserDto assigned;
 }

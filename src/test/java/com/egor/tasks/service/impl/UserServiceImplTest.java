@@ -1,6 +1,5 @@
 package com.egor.tasks.service.impl;
 
-import com.egor.tasks.dto.UserDto;
 import com.egor.tasks.entity.User;
 import com.egor.tasks.exception.DuplicateUserException;
 import com.egor.tasks.exception.IncorrectPasswordException;
@@ -38,7 +37,7 @@ class UserServiceImplTest {
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
 
-        var loginDTO = new UserDto();
+        var loginDTO = new User();
         loginDTO.setEmail("1@1.ru");
         loginDTO.setPassword("test");
 
@@ -54,7 +53,7 @@ class UserServiceImplTest {
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
 
-        var loginDTO = new UserDto();
+        var loginDTO = new User();
         loginDTO.setEmail("1@1.ru");
         loginDTO.setPassword("test");
 
@@ -70,7 +69,7 @@ class UserServiceImplTest {
     @Test
     void loginWithNotExistUser() {
 
-        var loginDTO = new UserDto();
+        var loginDTO = new User();
         loginDTO.setEmail("test1");
 
         assertThrows(UserNotFoundException.class, () -> userService.login(loginDTO));
@@ -79,7 +78,7 @@ class UserServiceImplTest {
     @Test
     void registrationWithDuplicatedUser() {
 
-        var userData = new UserDto();
+        var userData = new User();
         userData.setEmail("1@1.ru");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);

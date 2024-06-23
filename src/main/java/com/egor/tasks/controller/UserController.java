@@ -1,7 +1,10 @@
 package com.egor.tasks.controller;
 
-import com.egor.tasks.dto.TokenDto;
-import com.egor.tasks.dto.UserDto;
+import com.egor.tasks.dto.input.users.LoginDto;
+import com.egor.tasks.dto.input.users.RegDto;
+import com.egor.tasks.dto.output.users.TokenDto;
+import com.egor.tasks.entity.User;
+import com.egor.tasks.mapper.UserMapper;
 import com.egor.tasks.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserMapper registrationDataInputMapper;
 
     @PostMapping("/login")
     @Operation(summary = "Get JWT token by login and password",
@@ -28,8 +32,9 @@ public class UserController {
                                 description = "User is not found or incorrect password")
                 })
     public TokenDto login(@Parameter(description = "Login data", required = true)
-                            @RequestBody @Valid UserDto userDto) {
-        return userService.login(userDto);
+                            @RequestBody @Valid LoginDto loginDto) {
+        User user = registrationDataInputMapper.map(loginDto);
+        return userService.login(user);
     }
 
     @PostMapping("/reg")
@@ -41,8 +46,9 @@ public class UserController {
                                 description = "Duplicate registration data")
                 })
     public void reg(@Parameter(description = "Registration data", required = true)
-                        @RequestBody @Valid UserDto userDto) {
-        userService.reg(userDto);
+                        @RequestBody @Valid RegDto regDto) {
+        User user = registrationDataInputMapper.map(regDto);
+        userService.reg(user);
     }
 
 }
