@@ -6,6 +6,9 @@ import com.egor.tasks.entity.Task;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
 import com.egor.tasks.mapper.TaskMapper;
 import com.egor.tasks.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +27,9 @@ public class TaskController {
     private final TaskMapper taskMapper;
 
     @PostMapping("/create")
-    public void createTask(@RequestBody @Valid CreateTaskDto createTaskDto,
+    @Operation(summary = "Create a task")
+    public void createTask(@Parameter(description = "Task data", required = true)
+                           @RequestBody @Valid CreateTaskDto createTaskDto,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
         Task task1 = taskMapper.map(createTaskDto);
@@ -33,7 +38,9 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteTask(@PathVariable Long id,
+    @Operation(summary = "Delete a task")
+    public void deleteTask(@Parameter(description = "Task ID", required = true)
+                           @PathVariable Long id,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
@@ -41,7 +48,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/edit/status")
-    public void editStatus(@RequestBody @Valid EditTaskStatusDto editTaskStatusDto,
+    @Operation(summary = "Edit task status")
+    public void editStatus(@Parameter(description = "Status edit data", required = true)
+                           @RequestBody @Valid EditTaskStatusDto editTaskStatusDto,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
@@ -50,7 +59,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/edit/priority")
-    public void editPriority(@RequestBody @Valid EditTaskPriorityDto editTaskPriorityDto,
+    @Operation(summary = "Edit task priority")
+    public void editPriority(@Parameter(description = "Priority edit data", required = true)
+                             @RequestBody @Valid EditTaskPriorityDto editTaskPriorityDto,
                              Authentication authentication) {
         String authorEmail = authentication.getName();
 
@@ -59,7 +70,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/edit/description")
-    public void editNameAndDescription(@RequestBody @Valid EditTaskDto editTaskDto,
+    @Operation(summary = "Edit task description")
+    public void editNameAndDescription(@Parameter(description = "Description edit data", required = true)
+                                       @RequestBody @Valid EditTaskDto editTaskDto,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
         Task task = taskMapper.map(editTaskDto);
@@ -68,7 +81,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/edit/assigned")
-    public void editAssignedUser(@RequestBody @Valid EditTaskAssignedUserDto editTaskAssignedUserDto,
+    @Operation(summary = "Edit assigned user of the task")
+    public void editAssignedUser(@Parameter(description = "Assigned user edit data", required = true)
+                                 @RequestBody @Valid EditTaskAssignedUserDto editTaskAssignedUserDto,
                                  Authentication authentication) {
         String authorEmail = authentication.getName();
 
@@ -77,15 +92,29 @@ public class TaskController {
     }
 
     @GetMapping("/get/{id}")
-    public TaskOutputDto getTask(@PathVariable Long id) {
+    @Operation(summary = "Get one task by ID",
+            responses = {
+                    @ApiResponse(description = "The task",
+                            useReturnTypeSchema = true)
+            })
+    public TaskOutputDto getTask(@Parameter(description = "ID of task", required = true)
+                                 @PathVariable Long id) {
         Task task = taskService.getTask(id);
         return taskMapper.map(task);
     }
 
     @GetMapping("/get")
-    public Page<TaskOutputDto> getAllTasksForUser(@RequestParam int start,
-                                                  @RequestParam int end,
-                                                  @RequestParam String email) {
+    @Operation(summary = "Get all task by user",
+            responses = {
+                    @ApiResponse(description = "List of tasks by user",
+                            useReturnTypeSchema = true)
+            })
+    public Page<TaskOutputDto> getAllTasksForUser(@RequestParam @Parameter(description = "Start of the page", required = true)
+                                                  int start,
+                                                  @RequestParam @Parameter(description = "End of the page", required = true)
+                                                  int end,
+                                                  @RequestParam @Parameter(description = "E-Mail of the user", required = true)
+                                                  String email) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRangeException("Out of range!");
         }

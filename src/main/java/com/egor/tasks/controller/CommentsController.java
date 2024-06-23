@@ -7,6 +7,9 @@ import com.egor.tasks.entity.Comments;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
 import com.egor.tasks.mapper.CommentMapper;
 import com.egor.tasks.service.CommentsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +28,9 @@ public class CommentsController {
     private final CommentMapper commentMapper;
 
     @PostMapping("/create")
-    public void createComment(@RequestBody @Valid CreateCommentDto comment,
+    @Operation(summary = "Create a comment")
+    public void createComment(@Parameter(description = "Comment data", required = true)
+                              @RequestBody @Valid CreateCommentDto comment,
                               Authentication authentication) {
         String authorEmail = authentication.getName();
         Comments comment1 = commentMapper.map(comment);
@@ -34,7 +39,9 @@ public class CommentsController {
     }
 
     @PutMapping("/edit")
-    public void editComment(@RequestBody @Valid EditCommentDto changes,
+    @Operation(summary = "Edit a comment")
+    public void editComment(@Parameter(description = "Comment changes", required = true)
+                            @RequestBody @Valid EditCommentDto changes,
                             Authentication authentication) {
         String authorEmail = authentication.getName();
         Comments changes1 = commentMapper.map(changes);
@@ -43,15 +50,24 @@ public class CommentsController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteComment(@PathVariable Long id,
-                           Authentication authentication) {
+    @Operation(summary = "Delete a comment")
+    public void deleteComment(@Parameter(description = "ID of comment", required = true)
+                              @PathVariable Long id,
+                              Authentication authentication) {
         String authorEmail = authentication.getName();
 
         commentsService.delete(id, authorEmail);
     }
 
     @GetMapping("/get/{id}")
-    public CommentOutputDto getComment(@PathVariable Long id) {
+    @Operation(summary = "Get one comment by ID",
+            responses = {
+                    @ApiResponse(description = "The comment",
+                            useReturnTypeSchema = true)
+            })
+    public CommentOutputDto getComment(@PathVariable
+                                       @Parameter(description = "ID of comment", required = true)
+                                       Long id) {
         Comments comment = commentsService.getComment(id);
         return commentMapper.map(comment);
     }
