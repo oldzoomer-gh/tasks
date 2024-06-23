@@ -1,7 +1,9 @@
 package com.egor.tasks.controller;
 
 import com.egor.tasks.dto.CommentDto;
+import com.egor.tasks.entity.Comments;
 import com.egor.tasks.exception.PaginationOutOfRangeException;
+import com.egor.tasks.mapper.CommentMapper;
 import com.egor.tasks.service.CommentsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,14 +20,16 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class CommentsController {
     private final CommentsService commentsService;
+    private final CommentMapper commentMapper;
 
     @PostMapping("/{taskId}/create")
     public void createComment(@RequestBody @Valid CommentDto comment,
                               @PathVariable Long taskId,
                               Authentication authentication) {
         String authorEmail = authentication.getName();
+        Comments comment1 = commentMapper.map(comment);
 
-        commentsService.create(comment, taskId, authorEmail);
+        commentsService.create(comment1, taskId, authorEmail);
     }
 
     @PutMapping("/{id}/edit")
@@ -33,8 +37,9 @@ public class CommentsController {
                             @PathVariable Long id,
                             Authentication authentication) {
         String authorEmail = authentication.getName();
+        Comments changes1 = commentMapper.map(changes);
 
-        commentsService.edit(id, changes, authorEmail);
+        commentsService.edit(id, changes1, authorEmail);
     }
 
     @DeleteMapping("/{id}/delete")
@@ -47,7 +52,8 @@ public class CommentsController {
 
     @GetMapping("/get/{id}")
     public CommentDto getComment(@PathVariable Long id) {
-        return commentsService.getComment(id);
+        Comments comment = commentsService.getComment(id);
+        return commentMapper.map(comment);
     }
 
     @GetMapping("/get/user")
@@ -59,8 +65,9 @@ public class CommentsController {
         }
 
         Pageable pageable = PageRequest.of(start, end - start);
+        Page<Comments> multipleCommentsForUser = commentsService.getMultipleCommentsForUser(email, pageable);
 
-        return commentsService.getMultipleCommentsForUser(email, pageable);
+        return multipleCommentsForUser.map(commentMapper::map);
     }
 
     @GetMapping("/get/task/{taskId}")
@@ -72,7 +79,8 @@ public class CommentsController {
         }
 
         Pageable pageable = PageRequest.of(start, end - start);
+        Page<Comments> multipleCommentsForTask = commentsService.getMultipleCommentsForTask(taskId, pageable);
 
-        return commentsService.getMultipleCommentsForTask(taskId, pageable);
+        return multipleCommentsForTask.map(commentMapper::map);
     }
 }
