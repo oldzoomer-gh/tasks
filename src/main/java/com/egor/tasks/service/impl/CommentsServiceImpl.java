@@ -7,7 +7,6 @@ import com.egor.tasks.exception.CommentNotFoundException;
 import com.egor.tasks.exception.ForbiddenChangesException;
 import com.egor.tasks.exception.TaskNotFoundException;
 import com.egor.tasks.exception.UserNotFoundException;
-import com.egor.tasks.mapper.CommentMapper;
 import com.egor.tasks.repo.CommentsRepository;
 import com.egor.tasks.repo.TaskRepository;
 import com.egor.tasks.repo.UserRepository;
@@ -24,7 +23,6 @@ public class CommentsServiceImpl implements CommentsService {
     private final UserRepository userRepository;
     private final CommentsRepository commentsRepository;
     private final TaskRepository taskRepository;
-    private final CommentMapper commentMapper;
 
     @Override
     public void create(Comments comment, Long taskId, String email) {
