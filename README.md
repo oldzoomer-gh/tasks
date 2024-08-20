@@ -7,9 +7,10 @@ Based mainly on Java and Spring technologies.
 ./mvnw clean spring-boot:run
 ```
 
-### Run development PostgreSQL environment
+### Run in Docker
 
 ```shell
+cd docker
 docker-compose up -d
 ```
 
