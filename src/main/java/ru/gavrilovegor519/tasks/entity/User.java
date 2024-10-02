@@ -40,7 +40,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        var userRole = new HashSet<SimpleGrantedAuthority>();
+        Set<SimpleGrantedAuthority> userRole = new HashSet<>();
         userRole.add(new SimpleGrantedAuthority("ROLE_USER")); // all users are users, not admins
         return userRole;
     }
