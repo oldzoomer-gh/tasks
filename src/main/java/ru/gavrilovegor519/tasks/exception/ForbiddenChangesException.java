@@ -1,9 +1,5 @@
 package ru.gavrilovegor519.tasks.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Changes of data must do only his author!")
 public class ForbiddenChangesException extends RuntimeException {
     public ForbiddenChangesException() {
         super();
