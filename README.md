@@ -4,7 +4,7 @@ Based mainly on Java and Spring technologies.
 
 ## Run
 ```shell
-./mvnw clean spring-boot:run
+./gradlew bootRun
 ```
 
 ### Run in Docker
