@@ -41,16 +41,9 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testCompileOnly 'org.projectlombok:lombok:1.18.34'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-testing { 
-    suites {
-        test {
-            useJUnitJupiter()
-
-            dependencies {
-                implementation project()
-            }
-        }
-    }
+tasks.named('test') {
+    useJUnitPlatform()
 }
