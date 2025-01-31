@@ -7,9 +7,25 @@
 
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
+			"installGradle": true,
 			"version": "none",
-			"installMaven": "false",
-			"installGradle": "true"
+			"jdkDistro": "ms",
+			"gradleVersion": "latest",
+			"mavenVersion": "latest",
+			"antVersion": "latest",
+			"groovyVersion": "latest"
+		},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+			"version": "latest",
+			"helm": "latest",
+			"minikube": "latest"
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"azureDnsAutoDetection": true,
+			"installDockerBuildx": true,
+			"installDockerComposeSwitch": true,
+			"version": "latest",
+			"dockerDashComposeVersion": "latest"
 		}
 	}
 

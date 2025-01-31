@@ -1,6 +1,6 @@
 services:
   app:
-    image: 'tasks-docker:latest'
+    image: 'gavrilovegor519/tasks'
     build:
       context: .
     depends_on:
