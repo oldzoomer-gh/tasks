@@ -41,4 +41,4 @@ COPY --from=build-image $APP_HOME/build/libs/tasks-0.0.1-SNAPSHOT.jar app.jar
 #
 # The command to run when the container starts.
 #
-ENTRYPOINT java -jar app.jar
+CMD java -jar app.jar
