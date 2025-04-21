@@ -33,15 +33,15 @@ class TaskServiceImplTest {
     @Test
     void editStatusAsAuthor() throws UserNotFoundException, ForbiddenChangesException, TaskNotFoundException {
 
-        var user1 = new User();
+        User user1 = new User();
         user1.setId(0L);
         user1.setEmail("1@1.ru");
 
-        var user2 = new User();
+        User user2 = new User();
         user2.setId(1L);
         user2.setEmail("2@1.ru");
 
-        var task = new Task();
+        Task task = new Task();
         task.setId(0L);
         task.setName("Test");
         task.setDescription("Test task.");
@@ -59,15 +59,15 @@ class TaskServiceImplTest {
     @Test
     void editStatusAsAssigned() throws UserNotFoundException, ForbiddenChangesException, TaskNotFoundException {
 
-        var user1 = new User();
+        User user1 = new User();
         user1.setId(0L);
         user1.setEmail("1@1.ru");
 
-        var user2 = new User();
+        User user2 = new User();
         user2.setId(1L);
         user2.setEmail("2@1.ru");
 
-        var task = new Task();
+        Task task = new Task();
         task.setId(0L);
         task.setName("Test");
         task.setDescription("Test task.");
@@ -85,19 +85,19 @@ class TaskServiceImplTest {
     @Test
     void editStatusAsNotAuthorOrAssigned() {
 
-        var user1 = new User();
+        User user1 = new User();
         user1.setId(0L);
         user1.setEmail("1@1.ru");
 
-        var user2 = new User();
+        User user2 = new User();
         user2.setId(1L);
         user2.setEmail("2@1.ru");
 
-        var user3 = new User();
+        User user3 = new User();
         user3.setId(2L);
         user3.setEmail("3@1.ru");
 
-        var task = new Task();
+        Task task = new Task();
         task.setId(0L);
         task.setName("Test");
         task.setDescription("Test task.");

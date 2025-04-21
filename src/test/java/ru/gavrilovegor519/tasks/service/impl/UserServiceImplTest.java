@@ -37,11 +37,11 @@ class UserServiceImplTest {
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
 
-        var loginDTO = new User();
+        User loginDTO = new User();
         loginDTO.setEmail("1@1.ru");
         loginDTO.setPassword("test");
 
-        var user = new User();
+        User user = new User();
         user.setEmail(loginDTO.getEmail());
         user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
 
@@ -53,11 +53,11 @@ class UserServiceImplTest {
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
 
-        var loginDTO = new User();
+        User loginDTO = new User();
         loginDTO.setEmail("1@1.ru");
         loginDTO.setPassword("test");
 
-        var user = new User();
+        User user = new User();
         user.setEmail(loginDTO.getEmail());
         user.setPassword(passwordEncoder.encode("test2"));
 
@@ -69,7 +69,7 @@ class UserServiceImplTest {
     @Test
     void loginWithNotExistUser() {
 
-        var loginDTO = new User();
+        User loginDTO = new User();
         loginDTO.setEmail("test1");
 
         assertThrows(UserNotFoundException.class, () -> userService.login(loginDTO));
@@ -78,7 +78,7 @@ class UserServiceImplTest {
     @Test
     void registrationWithDuplicatedUser() {
 
-        var userData = new User();
+        User userData = new User();
         userData.setEmail("1@1.ru");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
