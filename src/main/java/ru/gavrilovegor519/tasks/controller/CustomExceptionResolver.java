@@ -31,7 +31,7 @@ public class CustomExceptionResolver {
     }
 
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<Response> otherHandler(Throwable e) {
+    public ResponseEntity<Response> otherHandler() {
         Response response = new Response("Server error");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
