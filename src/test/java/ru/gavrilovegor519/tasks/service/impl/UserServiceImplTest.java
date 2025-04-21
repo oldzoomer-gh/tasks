@@ -1,5 +1,6 @@
 package ru.gavrilovegor519.tasks.service.impl;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,53 +34,43 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
+    private static User loginDto;
+    private static User user;
+
+    @BeforeAll
+    static void init() {
+        loginDto = new User();
+        loginDto.setEmail("1@1.ru");
+
+        user = new User();
+        user.setEmail(loginDto.getEmail());
+    }
+
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
-
-        User loginDTO = new User();
-        loginDTO.setEmail("1@1.ru");
-
-        User user = new User();
-        user.setEmail(loginDTO.getEmail());
-
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
-        userService.login(loginDTO);
+        userService.login(loginDto);
     }
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-
-        User loginDTO = new User();
-        loginDTO.setEmail("1@1.ru");
-
-        User user = new User();
-        user.setEmail(loginDTO.getEmail());
-
         when(passwordEncoder.matches(any(), any())).thenReturn(false);
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
-        assertThrows(IncorrectPasswordException.class, () -> userService.login(loginDTO));
+        assertThrows(IncorrectPasswordException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void loginWithNotExistUser() {
-
-        User loginDTO = new User();
-        loginDTO.setEmail("test1");
-
-        assertThrows(UserNotFoundException.class, () -> userService.login(loginDTO));
+        assertThrows(UserNotFoundException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
-
-        User userData = new User();
-        userData.setEmail("1@1.ru");
-
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(DuplicateUserException.class, () -> userService.reg(userData));
+        assertThrows(DuplicateUserException.class, () -> userService.reg(loginDto));
     }
 }
