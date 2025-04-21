@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.gavrilovegor519.tasks.entity.User;
@@ -28,8 +27,8 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
-    @Spy
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -39,12 +38,11 @@ class UserServiceImplTest {
 
         User loginDTO = new User();
         loginDTO.setEmail("1@1.ru");
-        loginDTO.setPassword("test");
 
         User user = new User();
         user.setEmail(loginDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
 
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
         userService.login(loginDTO);
@@ -55,12 +53,11 @@ class UserServiceImplTest {
 
         User loginDTO = new User();
         loginDTO.setEmail("1@1.ru");
-        loginDTO.setPassword("test");
 
         User user = new User();
         user.setEmail(loginDTO.getEmail());
-        user.setPassword(passwordEncoder.encode("test2"));
 
+        when(passwordEncoder.matches(any(), any())).thenReturn(false);
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
         assertThrows(IncorrectPasswordException.class, () -> userService.login(loginDTO));
