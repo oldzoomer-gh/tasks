@@ -89,7 +89,7 @@ public class CommentsController {
     @GetMapping("/get/task")
     public Page<CommentOutputDto> getAllCommentsForTask(@RequestParam int start,
                                                         @RequestParam int end,
-                                                        @PathVariable long taskId) {
+                                                        @RequestParam long taskId) {
         if ((end - start) < 1) {
             throw new PaginationOutOfRangeException("Out of range!");
         }
