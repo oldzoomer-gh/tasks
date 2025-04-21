@@ -1,6 +1,5 @@
 package ru.gavrilovegor519.tasks.service.impl;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,22 +33,16 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private static User loginDto;
-    private static User user;
+    @Mock
+    private User loginDto;
 
-    @BeforeAll
-    static void init() {
-        loginDto = new User();
-        loginDto.setEmail("1@1.ru");
-
-        user = new User();
-        user.setEmail(loginDto.getEmail());
-    }
+    @Mock
+    private User user;
 
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
-        when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
         userService.login(loginDto);
     }
@@ -57,7 +50,7 @@ class UserServiceImplTest {
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
         when(passwordEncoder.matches(any(), any())).thenReturn(false);
-        when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
         assertThrows(IncorrectPasswordException.class, () -> userService.login(loginDto));
     }
