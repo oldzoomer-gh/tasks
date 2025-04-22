@@ -9,8 +9,5 @@ import ru.gavrilovegor519.tasks.constant.TaskPriority;
 @Setter
 public class EditTaskPriorityDto {
     @NotNull
-    private Long taskId;
-
-    @NotNull
     private TaskPriority priority;
 }

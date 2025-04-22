@@ -9,8 +9,5 @@ import ru.gavrilovegor519.tasks.constant.TaskStatus;
 @Setter
 public class EditTaskStatusDto {
     @NotNull
-    private Long taskId;
-
-    @NotNull
     private TaskStatus status;
 }

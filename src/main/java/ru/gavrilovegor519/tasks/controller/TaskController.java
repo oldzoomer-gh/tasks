@@ -51,44 +51,45 @@ public class TaskController {
     @Operation(summary = "Edit task status")
     public void editStatus(@Parameter(description = "Status edit data", required = true)
                            @RequestBody @Valid EditTaskStatusDto editTaskStatusDto,
+                           @PathVariable Long id,
                            Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editStatus(editTaskStatusDto.getTaskId(),
-                editTaskStatusDto.getStatus(), authorEmail);
+        taskService.editStatus(id, editTaskStatusDto.getStatus(), authorEmail);
     }
 
     @PutMapping("/{id}/edit/priority")
     @Operation(summary = "Edit task priority")
     public void editPriority(@Parameter(description = "Priority edit data", required = true)
                              @RequestBody @Valid EditTaskPriorityDto editTaskPriorityDto,
+                             @PathVariable Long id,
                              Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editPriority(editTaskPriorityDto.getTaskId(),
-                editTaskPriorityDto.getPriority(), authorEmail);
+        taskService.editPriority(id, editTaskPriorityDto.getPriority(), authorEmail);
     }
 
     @PutMapping("/{id}/edit/description")
     @Operation(summary = "Edit task description")
     public void editNameAndDescription(@Parameter(description = "Description edit data", required = true)
                                        @RequestBody @Valid EditTaskDto editTaskDto,
+                                       @PathVariable Long id,
                                        Authentication authentication) {
         String authorEmail = authentication.getName();
         Task task = taskMapper.map(editTaskDto);
 
-        taskService.editNameAndDescription(editTaskDto.getTaskId(), task, authorEmail);
+        taskService.editNameAndDescription(id, task, authorEmail);
     }
 
     @PutMapping("/{id}/edit/assigned")
     @Operation(summary = "Edit assigned user of the task")
     public void editAssignedUser(@Parameter(description = "Assigned user edit data", required = true)
                                  @RequestBody @Valid EditTaskAssignedUserDto editTaskAssignedUserDto,
+                                 @PathVariable Long id,
                                  Authentication authentication) {
         String authorEmail = authentication.getName();
 
-        taskService.editAssignedUser(editTaskAssignedUserDto.getTaskId(),
-                editTaskAssignedUserDto.getAssignedEmail(), authorEmail);
+        taskService.editAssignedUser(id, editTaskAssignedUserDto.getAssignedEmail(), authorEmail);
     }
 
     @GetMapping("/get/{id}")

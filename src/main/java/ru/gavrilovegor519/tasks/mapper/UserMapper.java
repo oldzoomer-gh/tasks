@@ -13,7 +13,7 @@ import ru.gavrilovegor519.tasks.mapper.util.PasswordEncoderMapper;
         uses = PasswordEncoderMapper.class,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
-    @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
+    @Mapping(source = "password", target = "password")
     User map(LoginDto dto);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
