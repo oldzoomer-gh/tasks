@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
+
     @Mock
     private JwtUtilities jwtUtilities;
 
@@ -33,14 +34,11 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    @Mock
-    private User loginDto;
-
-    @Mock
-    private User user;
-
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
+        User loginDto = createUser("test@example.com", "password");
+        User user = createUser("test@example.com", "encodedPassword");
+
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
@@ -49,6 +47,9 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
+        User loginDto = createUser("test@example.com", "password");
+        User user = createUser("test@example.com", "encodedPassword");
+
         when(passwordEncoder.matches(any(), any())).thenReturn(false);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
@@ -57,13 +58,24 @@ class UserServiceImplTest {
 
     @Test
     void loginWithNotExistUser() {
+        User loginDto = createUser("test@example.com", "password");
+
         assertThrows(UserNotFoundException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
+        User loginDto = createUser("test@example.com", "password");
+
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(DuplicateUserException.class, () -> userService.reg(loginDto));
+    }
+
+    private User createUser(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return user;
     }
 }

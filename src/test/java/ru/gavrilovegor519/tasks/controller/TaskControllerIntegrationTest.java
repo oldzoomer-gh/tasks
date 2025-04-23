@@ -1,6 +1,7 @@
 package ru.gavrilovegor519.tasks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,22 +39,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TaskControllerIntegrationTest {
 
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres")
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpassword")
             .withExposedPorts(5432)
             .waitingFor(Wait.forListeningPort());
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private TaskRepository taskRepository;
-    private User user;
-    private User user2;
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
@@ -66,28 +69,21 @@ public class TaskControllerIntegrationTest {
     void setUp() {
         userRepository.deleteAll();
         taskRepository.deleteAll();
+    }
 
-        user = new User();
-        user.setEmail("test@example.com");
-        user.setPassword("password");
-        userRepository.save(user);
-
-        user2 = new User();
-        user2.setEmail("test2@example.com");
-        user2.setPassword("password");
-        userRepository.save(user2);
+    @AfterEach
+    void tearDown() {
+        taskRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @WithMockUser(username = "test@example.com")
     void createTask_shouldCreateTask() throws Exception {
-        CreateTaskDto createTaskDto = new CreateTaskDto();
-        createTaskDto.setName("Test Task");
-        createTaskDto.setDescription("Test Description");
-        createTaskDto.setPriority(TaskPriority.LOW);
-        createTaskDto.setStatus(TaskStatus.FINISHED);
-        createTaskDto.setAssignedEmail(user2.getEmail());
+        createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
 
+        CreateTaskDto createTaskDto = createCreateTaskDto("Test Task", "Test Description", TaskPriority.LOW, TaskStatus.FINISHED, user2.getEmail());
         mockMvc.perform(post("/api/1.0/tasks/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createTaskDto)))
@@ -105,14 +101,10 @@ public class TaskControllerIntegrationTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void getTask_shouldReturnTask() throws Exception {
-        Task task = new Task();
-        task.setName("Test Task");
-        task.setDescription("Test Description");
-        task.setAuthor(user);
-        task.setPriority(TaskPriority.LOW);
-        task.setStatus(TaskStatus.FINISHED);
-        task.setAssigned(user2);
-        task = taskRepository.save(task);
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
+
+        Task task = createTask("Test Task", "Test Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
         mockMvc.perform(get("/api/1.0/tasks/get/" + task.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(task.getId()))
@@ -123,18 +115,12 @@ public class TaskControllerIntegrationTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void updateTask_shouldUpdateTask() throws Exception {
-        Task task = new Task();
-        task.setName("Original Task");
-        task.setDescription("Original Description");
-        task.setAuthor(user);
-        task.setPriority(TaskPriority.LOW);
-        task.setStatus(TaskStatus.FINISHED);
-        task.setAssigned(user2);
-        task = taskRepository.save(task);
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
 
-        EditTaskDto editTaskDto = new EditTaskDto();
-        editTaskDto.setName("Updated Task");
-        editTaskDto.setDescription("Updated Description");
+        Task task = createTask("Original Task", "Original Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
+
+        EditTaskDto editTaskDto = createEditTaskDto("Updated Task", "Updated Description");
         mockMvc.perform(put("/api/1.0/tasks/" + task.getId() + "/edit/description")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(editTaskDto)))
@@ -144,5 +130,40 @@ public class TaskControllerIntegrationTest {
         assertNotNull(updatedTask);
         assertEquals("Updated Task", updatedTask.getName());
         assertEquals("Updated Description", updatedTask.getDescription());
+    }
+
+    private User createUser(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userRepository.save(user);
+    }
+
+    private Task createTask(String name, String description, User author, TaskPriority priority, TaskStatus status, User assigned) {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setAuthor(author);
+        task.setPriority(priority);
+        task.setStatus(status);
+        task.setAssigned(assigned);
+        return taskRepository.save(task);
+    }
+
+    private CreateTaskDto createCreateTaskDto(String name, String description, TaskPriority priority, TaskStatus status, String assignedEmail) {
+        CreateTaskDto createTaskDto = new CreateTaskDto();
+        createTaskDto.setName(name);
+        createTaskDto.setDescription(description);
+        createTaskDto.setPriority(priority);
+        createTaskDto.setStatus(status);
+        createTaskDto.setAssignedEmail(assignedEmail);
+        return createTaskDto;
+    }
+
+    private EditTaskDto createEditTaskDto(String name, String description) {
+        EditTaskDto editTaskDto = new EditTaskDto();
+        editTaskDto.setName(name);
+        editTaskDto.setDescription(description);
+        return editTaskDto;
     }
 }

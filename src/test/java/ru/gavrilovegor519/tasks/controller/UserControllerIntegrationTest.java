@@ -1,6 +1,7 @@
 package ru.gavrilovegor519.tasks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +31,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerIntegrationTest {
 
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres")
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpassword")
             .withExposedPorts(5432)
             .waitingFor(Wait.forListeningPort());
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -55,12 +59,14 @@ public class UserControllerIntegrationTest {
         userRepository.deleteAll();
     }
 
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
+    }
+
     @Test
     void testRegistrationWithDuplicateEmail() throws Exception {
-        RegDto regDto = new RegDto();
-        regDto.setEmail("duplicate@example.com");
-        regDto.setPassword("password123");
-
+        RegDto regDto = createRegDto("duplicate@example.com", "password123");
         mockMvc.perform(post("/api/1.0/user/reg")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(regDto)))
@@ -74,23 +80,31 @@ public class UserControllerIntegrationTest {
 
     @Test
     void testLogin() throws Exception {
-        RegDto regDto = new RegDto();
-        regDto.setEmail("test@example.com");
-        regDto.setPassword("password123");
-
+        RegDto regDto = createRegDto("test@example.com", "password123");
         mockMvc.perform(post("/api/1.0/user/reg")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(regDto)))
                 .andExpect(status().isOk());
 
-        LoginDto loginDto = new LoginDto();
-        loginDto.setEmail(regDto.getEmail());
-        loginDto.setPassword(regDto.getPassword());
-
+        LoginDto loginDto = createLoginDto(regDto.getEmail(), regDto.getPassword());
         mockMvc.perform(post("/api/1.0/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").exists());
+    }
+
+    private RegDto createRegDto(String email, String password) {
+        RegDto regDto = new RegDto();
+        regDto.setEmail(email);
+        regDto.setPassword(password);
+        return regDto;
+    }
+
+    private LoginDto createLoginDto(String email, String password) {
+        LoginDto loginDto = new LoginDto();
+        loginDto.setEmail(email);
+        loginDto.setPassword(password);
+        return loginDto;
     }
 }

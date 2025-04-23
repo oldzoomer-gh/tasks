@@ -1,6 +1,7 @@
 package ru.gavrilovegor519.tasks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,25 +41,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CommentsControllerIntegrationTest {
 
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres")
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpassword")
             .withExposedPorts(5432)
             .waitingFor(Wait.forListeningPort());
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private TaskRepository taskRepository;
+
     @Autowired
     private CommentsRepository commentsRepository;
-    private User user;
-    private Task task;
-
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
@@ -71,30 +74,22 @@ public class CommentsControllerIntegrationTest {
         userRepository.deleteAll();
         taskRepository.deleteAll();
         commentsRepository.deleteAll();
+    }
 
-        user = new User();
-        user.setEmail("test@example.com");
-        user.setPassword("password");
-        userRepository.save(user);
-
-        User user2 = new User();
-        user2.setEmail("test2@example.com");
-        user2.setPassword("password");
-        userRepository.save(user2);
-
-        task = new Task();
-        task.setName("Test Task");
-        task.setDescription("Test Description");
-        task.setAuthor(user);
-        task.setPriority(TaskPriority.LOW);
-        task.setStatus(TaskStatus.FINISHED);
-        task.setAssigned(user2);
-        taskRepository.save(task);
+    @AfterEach
+    void tearDown() {
+        commentsRepository.deleteAll();
+        taskRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @WithMockUser(username = "test@example.com")
     void createComment_shouldCreateComment() throws Exception {
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
+        Task task = createTask("Test Task", "Test Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
+
         CreateCommentDto createCommentDto = new CreateCommentDto();
         createCommentDto.setTaskId(task.getId());
         createCommentDto.setText("Test comment");
@@ -114,12 +109,10 @@ public class CommentsControllerIntegrationTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void getAllCommentsForUser_shouldReturnComments() throws Exception {
-        Comments comment = new Comments();
-        comment.setText("Test comment");
-        comment.setAuthor(user);
-        comment.setTask(task);
-        commentsRepository.save(comment);
-
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
+        Task task = createTask("Test Task", "Test Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
+        Comments comment = createComment("Test comment", user, task);
         mockMvc.perform(get("/api/1.0/comments/get/user")
                         .param("start", "0")
                         .param("end", "10")
@@ -132,12 +125,10 @@ public class CommentsControllerIntegrationTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void getAllCommentsForTask_shouldReturnComments() throws Exception {
-        Comments comment = new Comments();
-        comment.setText("Test comment");
-        comment.setAuthor(user);
-        comment.setTask(task);
-        commentsRepository.save(comment);
-
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
+        Task task = createTask("Test Task", "Test Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
+        Comments comment = createComment("Test comment", user, task);
         mockMvc.perform(get("/api/1.0/comments/get/task")
                         .param("start", "0")
                         .param("end", "10")
@@ -150,12 +141,10 @@ public class CommentsControllerIntegrationTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void getComment_shouldReturnComment() throws Exception {
-        Comments comment = new Comments();
-        comment.setText("Test comment");
-        comment.setAuthor(user);
-        comment.setTask(task);
-        comment = commentsRepository.save(comment);
-
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
+        Task task = createTask("Test Task", "Test Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
+        Comments comment = createComment("Test comment", user, task);
         mockMvc.perform(get("/api/1.0/comments/get/" + comment.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(comment.getId()))
@@ -165,16 +154,12 @@ public class CommentsControllerIntegrationTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void editComment_shouldEditComment() throws Exception {
-        Comments comment = new Comments();
-        comment.setText("Original comment");
-        comment.setAuthor(user);
-        comment.setTask(task);
-        commentsRepository.save(comment);
+        User user = createUser("test@example.com", "password");
+        User user2 = createUser("test2@example.com", "password");
+        Task task = createTask("Test Task", "Test Description", user, TaskPriority.LOW, TaskStatus.FINISHED, user2);
+        Comments comment = createComment("Original comment", user, task);
 
-        EditCommentDto editCommentDto = new EditCommentDto();
-        editCommentDto.setCommentId(comment.getId());
-        editCommentDto.setText("Updated comment");
-
+        EditCommentDto editCommentDto = createEditCommentDto(comment.getId(), "Updated comment");
         mockMvc.perform(put("/api/1.0/comments/edit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(editCommentDto)))
@@ -183,5 +168,38 @@ public class CommentsControllerIntegrationTest {
         Comments updatedComment = commentsRepository.findById(comment.getId()).orElseThrow();
         assertNotNull(updatedComment);
         assertEquals("Updated comment", updatedComment.getText());
+    }
+
+    private User createUser(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userRepository.save(user);
+    }
+
+    private Task createTask(String name, String description, User author, TaskPriority priority, TaskStatus status, User assigned) {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setAuthor(author);
+        task.setPriority(priority);
+        task.setStatus(status);
+        task.setAssigned(assigned);
+        return taskRepository.save(task);
+    }
+
+    private Comments createComment(String text, User author, Task task) {
+        Comments comment = new Comments();
+        comment.setText(text);
+        comment.setAuthor(author);
+        comment.setTask(task);
+        return commentsRepository.save(comment);
+    }
+
+    private EditCommentDto createEditCommentDto(Long commentId, String text) {
+        EditCommentDto editCommentDto = new EditCommentDto();
+        editCommentDto.setCommentId(commentId);
+        editCommentDto.setText(text);
+        return editCommentDto;
     }
 }
