@@ -11,7 +11,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class TestContainersConfig {
 
     @Container
-    static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17")
+    static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpassword")
@@ -20,7 +20,7 @@ public class TestContainersConfig {
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.url", () -> "jdbc:tc:postgresql:17-alpine:///testdb");
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
     }
