@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.gavrilovegor519.tasks.constant.TaskPriority;
 import ru.gavrilovegor519.tasks.constant.TaskStatus;
 import ru.gavrilovegor519.tasks.entity.Task;
 import ru.gavrilovegor519.tasks.entity.User;
@@ -18,7 +17,7 @@ import ru.gavrilovegor519.tasks.repo.UserRepository;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TaskServiceImplTest {
@@ -34,58 +33,55 @@ class TaskServiceImplTest {
 
     @Test
     void editStatusAsAuthor() throws UserNotFoundException, ForbiddenChangesException, TaskNotFoundException {
-        User user1 = createUser(0L, "1@1.ru");
-        User user2 = createUser(1L, "2@1.ru");
-        Task task = createTask(0L, "Test", "Test task.", user1, user2, TaskStatus.PENDING, TaskPriority.LOW);
+        User user1 = mock(User.class);
+        Task task = mock(Task.class);
 
+        when(user1.getEmail()).thenReturn("1@1.ru");
+        when(task.getAuthor()).thenReturn(user1);
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user1));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
 
         taskService.editStatus(0L, TaskStatus.FINISHED, "1@1.ru");
+
+        verify(task).setStatus(TaskStatus.FINISHED);
+        verify(taskRepository).save(task);
     }
 
     @Test
     void editStatusAsAssigned() throws UserNotFoundException, ForbiddenChangesException, TaskNotFoundException {
-        User user1 = createUser(0L, "1@1.ru");
-        User user2 = createUser(1L, "2@1.ru");
-        Task task = createTask(0L, "Test", "Test task.", user1, user2, TaskStatus.PENDING, TaskPriority.LOW);
+        User user1 = mock(User.class);
+        User user2 = mock(User.class);
+        Task task = mock(Task.class);
 
+        when(user1.getEmail()).thenReturn("1@1.ru");
+        when(user2.getEmail()).thenReturn("2@1.ru");
+        when(task.getAuthor()).thenReturn(user1);
+        when(task.getAssigned()).thenReturn(user2);
         when(userRepository.findByEmail("2@1.ru")).thenReturn(Optional.of(user2));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
 
         taskService.editStatus(0L, TaskStatus.FINISHED, "2@1.ru");
+
+        verify(task).setStatus(TaskStatus.FINISHED);
+        verify(taskRepository).save(task);
     }
 
     @Test
     void editStatusAsNotAuthorOrAssigned() {
-        User user1 = createUser(0L, "1@1.ru");
-        User user2 = createUser(1L, "2@1.ru");
-        User user3 = createUser(2L, "3@1.ru");
-        Task task = createTask(0L, "Test", "Test task.", user1, user2, TaskStatus.PENDING, TaskPriority.LOW);
+        User user1 = mock(User.class);
+        User user2 = mock(User.class);
+        User user3 = mock(User.class);
+        Task task = mock(Task.class);
 
+        when(user1.getEmail()).thenReturn("1@1.ru");
+        when(user2.getEmail()).thenReturn("2@1.ru");
+        when(user3.getEmail()).thenReturn("3@1.ru");
+        when(task.getAuthor()).thenReturn(user1);
+        when(task.getAssigned()).thenReturn(user2);
         when(userRepository.findByEmail("3@1.ru")).thenReturn(Optional.of(user3));
         when(taskRepository.findById(0L)).thenReturn(Optional.of(task));
 
         assertThrows(ForbiddenChangesException.class,
                 () -> taskService.editStatus(0L, TaskStatus.FINISHED, "3@1.ru"));
-    }
-
-    private User createUser(Long id, String email) {
-        User user = new User();
-        user.setId(id);
-        user.setEmail(email);
-        return user;
-    }
-
-    private Task createTask(Long id, String name, String description, User author, User assigned, TaskStatus status, TaskPriority priority) {
-        Task task = new Task();
-        task.setId(id);
-        task.setName(name);
-        task.setDescription(description);
-        task.setAuthor(author);
-        task.setAssigned(assigned);
-        task.setStatus(status);
-        task.setPriority(priority);
-        return task;
     }
 }

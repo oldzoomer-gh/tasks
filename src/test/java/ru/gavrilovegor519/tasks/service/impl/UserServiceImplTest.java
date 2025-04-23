@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -36,19 +36,21 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
-        User loginDto = createUser("test@example.com", "password");
-        User user = createUser("test@example.com", "encodedPassword");
+        User loginDto = mock(User.class);
+        User user = mock(User.class);
 
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
         userService.login(loginDto);
+
+        verify(jwtUtilities).generateToken(user.getUsername(), "ROLE_USER");
     }
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-        User loginDto = createUser("test@example.com", "password");
-        User user = createUser("test@example.com", "encodedPassword");
+        User loginDto = mock(User.class);
+        User user = mock(User.class);
 
         when(passwordEncoder.matches(any(), any())).thenReturn(false);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
@@ -58,24 +60,21 @@ class UserServiceImplTest {
 
     @Test
     void loginWithNotExistUser() {
-        User loginDto = createUser("test@example.com", "password");
+        User loginDto = mock(User.class);
+
+        when(loginDto.getEmail()).thenReturn("test@example.com");
 
         assertThrows(UserNotFoundException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
-        User loginDto = createUser("test@example.com", "password");
+        User loginDto = mock(User.class);
+
+        when(loginDto.getEmail()).thenReturn("test@example.com");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(DuplicateUserException.class, () -> userService.reg(loginDto));
-    }
-
-    private User createUser(String email, String password) {
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        return user;
     }
 }
