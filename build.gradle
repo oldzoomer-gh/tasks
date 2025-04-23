@@ -23,7 +23,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 def jwtVersion = '0.12.6'
