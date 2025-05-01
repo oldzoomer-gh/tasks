@@ -6,11 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.gavrilovegor519.tasks.entity.Task;
 import ru.gavrilovegor519.tasks.entity.User;
 
-public interface TaskRepository extends
-        JpaRepository<Task, Long> {
-    // findById is default
-
-    Page<Task> findAllByAuthor(User author,
-                               Pageable pageable);
-
+public interface TaskRepository extends JpaRepository<Task, Long> {
+    Page<Task> findAllByAuthor(User author, Pageable pageable);
 }

@@ -2,7 +2,6 @@ package ru.gavrilovegor519.tasks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gavrilovegor519.tasks.config.TestContainersConfig;
 import ru.gavrilovegor519.tasks.constant.TaskPriority;
 import ru.gavrilovegor519.tasks.constant.TaskStatus;
@@ -23,7 +21,6 @@ import ru.gavrilovegor519.tasks.repo.CommentsRepository;
 import ru.gavrilovegor519.tasks.repo.TaskRepository;
 import ru.gavrilovegor519.tasks.repo.UserRepository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class CommentsControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired
@@ -48,13 +44,6 @@ public class CommentsControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired
     private CommentsRepository commentsRepository;
-
-    @BeforeEach
-    void setUp() {
-        userRepository.deleteAll();
-        taskRepository.deleteAll();
-        commentsRepository.deleteAll();
-    }
 
     @AfterEach
     void tearDown() {

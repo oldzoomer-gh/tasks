@@ -17,13 +17,11 @@ public class Comments {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @ManyToOne
     @JsonBackReference
     private User author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id")
+    @ManyToOne
     @JsonBackReference
     private Task task;
 

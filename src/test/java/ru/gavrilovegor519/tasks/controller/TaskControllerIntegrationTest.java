@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gavrilovegor519.tasks.config.TestContainersConfig;
 import ru.gavrilovegor519.tasks.constant.TaskPriority;
 import ru.gavrilovegor519.tasks.constant.TaskStatus;
@@ -20,7 +19,6 @@ import ru.gavrilovegor519.tasks.entity.User;
 import ru.gavrilovegor519.tasks.repo.TaskRepository;
 import ru.gavrilovegor519.tasks.repo.UserRepository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -28,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class TaskControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired
