@@ -34,11 +34,9 @@ public class Task {
     private TaskPriority priority;
 
     @ManyToOne
-    @JsonBackReference
     private User author;
 
     @ManyToOne
-    @JsonBackReference
     private User assigned;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)

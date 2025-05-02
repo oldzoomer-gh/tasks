@@ -18,7 +18,6 @@ public class Comments {
     private Long id;
 
     @ManyToOne
-    @JsonBackReference
     private User author;
 
     @ManyToOne

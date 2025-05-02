@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gavrilovegor519.tasks.entity.Comments;
 import ru.gavrilovegor519.tasks.entity.Task;
 import ru.gavrilovegor519.tasks.entity.User;
@@ -25,6 +26,7 @@ public class CommentsServiceImpl implements CommentsService {
     private final TaskRepository taskRepository;
 
     @Override
+    @Transactional
     public void create(Comments comment, Long taskId, String email) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Author not found."));
@@ -39,8 +41,8 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public void edit(Long id, Comments changes,
-                     String email) {
+    @Transactional
+    public void edit(Long id, Comments changes, String email) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
@@ -51,11 +53,11 @@ public class CommentsServiceImpl implements CommentsService {
             throw new ForbiddenChangesException("Changes of data must do only his author!");
         } else {
             comment.setText(changes.getText());
-            commentsRepository.save(comment);
         }
     }
 
     @Override
+    @Transactional
     public void delete(Long id, String email) {
         Comments comments = commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found."));
@@ -68,21 +70,19 @@ public class CommentsServiceImpl implements CommentsService {
         } else {
             Task task = comments.getTask();
             task.getComments().remove(comments);
-            taskRepository.save(task);
-            author.getComments().remove(comments);
-            userRepository.save(author);
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Comments getComment(Long id) {
         return commentsRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found."));
     }
 
     @Override
-    public Page<Comments> getMultipleCommentsForUser(String email,
-                                                              Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<Comments> getMultipleCommentsForUser(String email, Pageable pageable) {
         User author = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
@@ -90,8 +90,8 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public Page<Comments> getMultipleCommentsForTask(Long taskId,
-                                                              Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<Comments> getMultipleCommentsForTask(Long taskId, Pageable pageable) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found."));
 

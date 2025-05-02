@@ -44,7 +44,6 @@ class TaskServiceImplTest {
         taskService.editStatus(0L, TaskStatus.FINISHED, "1@1.ru");
 
         verify(task).setStatus(TaskStatus.FINISHED);
-        verify(taskRepository).save(task);
     }
 
     @Test
@@ -63,7 +62,6 @@ class TaskServiceImplTest {
         taskService.editStatus(0L, TaskStatus.FINISHED, "2@1.ru");
 
         verify(task).setStatus(TaskStatus.FINISHED);
-        verify(taskRepository).save(task);
     }
 
     @Test

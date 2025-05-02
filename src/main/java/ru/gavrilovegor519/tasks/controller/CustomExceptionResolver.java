@@ -16,14 +16,14 @@ public class CustomExceptionResolver {
             PaginationOutOfRangeException.class, TaskNotFoundException.class})
     public ResponseEntity<Response> badRequestHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<Response> conflictHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.CONFLICT.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -31,14 +31,14 @@ public class CustomExceptionResolver {
             IncorrectPasswordException.class, UserNotFoundException.class})
     public ResponseEntity<Response> forbiddenHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.FORBIDDEN.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Response> otherHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
