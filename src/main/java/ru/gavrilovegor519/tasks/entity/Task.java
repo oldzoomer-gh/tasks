@@ -39,7 +39,7 @@ public class Task {
     @ManyToOne
     private User assigned;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Comments> comments = new ArrayList<>();
 
